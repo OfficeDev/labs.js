@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ContentApp">
+  <Id>[GUID in the form EDA37F5A-13F1-4CB6-BA6A-4B2D2ED0A783]</Id>
+  <Version>[Version in the form 1.0.0.0]</Version>
+  <ProviderName>[Provider Name]</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName DefaultValue="[Display Name]">
+  </DisplayName>
+  <Description DefaultValue="[Description]">
+  </Description>
+  <IconUrl DefaultValue="[32x32px icon URL]">
+  </IconUrl>
+  <HighResolutionIconUrl DefaultValue="[96x96px icon URL]">
+  </HighResolutionIconUrl>
+  <SupportUrl DefaultValue="[Support URL]"></SupportUrl>
+  <Hosts>
+    <Host Name="Presentation"/>
+  </Hosts>  
+  <DefaultSettings>
+    <SourceLocation DefaultValue="[URL to application]"></SourceLocation>
+    <!-- Max values for the below is 1000px -->
+    <RequestedWidth>960</RequestedWidth> 
+    <RequestedHeight>540</RequestedHeight>
+  </DefaultSettings>
+  <Permissions>Restricted</Permissions>
+  <!-- Whether to take an application snapshot as a preview. Need to be careful if this could expose information that should be no shown (i.e. the answer) -->
+  <AllowSnapshot>true</AllowSnapshot>
+</OfficeApp>

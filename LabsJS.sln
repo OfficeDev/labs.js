@@ -1,0 +1,109 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabsComponents", "Components\LabsComponents.csproj", "{0393B2BF-5CED-45BC-9CEA-AAFCC5572DA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabsCore", "core\LabsCore.csproj", "{DDDC0B6B-8B64-4AA5-8098-871AB46771D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabsHosts", "Hosts\LabsHosts.csproj", "{668917F0-327C-4D85-9F5B-1474C0A6BD91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabsHostsCore", "HostsCore\LabsHostsCore.csproj", "{2329FD2A-BF29-4CE3-B62A-3BDCBF6F56B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabsApi", "Api\LabsApi.csproj", "{D6027592-8076-4561-B107-B11FBB3939C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabsServer", "Server\LabsServer.csproj", "{D6A26115-3225-4096-B2EB-E97BFCE63442}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabsActions", "Actions\LabsActions.csproj", "{E0ECB2E8-AB4D-4AA8-B7DE-76FA45B3A17A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabsGetActions", "GetActions\LabsGetActions.csproj", "{77D123FF-F7AE-41D9-997C-968A12328A46}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 8
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://vstfpg15:8080/tfs/sbg_athena
+		SccProjectUniqueName0 = Components\\LabsComponents.csproj
+		SccProjectName0 = Components
+		SccAuxPath0 = http://vstfpg15:8080/tfs/sbg_athena
+		SccLocalPath0 = Components
+		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName1 = Hosts\\LabsHosts.csproj
+		SccProjectName1 = Hosts
+		SccAuxPath1 = http://vstfpg15:8080/tfs/sbg_athena
+		SccLocalPath1 = Hosts
+		SccProvider1 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName2 = HostsCore\\LabsHostsCore.csproj
+		SccProjectName2 = HostsCore
+		SccAuxPath2 = http://vstfpg15:8080/tfs/sbg_athena
+		SccLocalPath2 = HostsCore
+		SccProvider2 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName3 = Api\\LabsApi.csproj
+		SccProjectName3 = Api
+		SccAuxPath3 = http://vstfpg15:8080/tfs/sbg_athena
+		SccLocalPath3 = Api
+		SccProvider3 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName4 = Server\\LabsServer.csproj
+		SccProjectName4 = Server
+		SccAuxPath4 = http://vstfpg15:8080/tfs/sbg_athena
+		SccLocalPath4 = Server
+		SccProvider4 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName5 = Actions\\LabsActions.csproj
+		SccProjectName5 = Actions
+		SccAuxPath5 = http://vstfpg15:8080/tfs/sbg_athena
+		SccLocalPath5 = Actions
+		SccProvider5 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName6 = GetActions\\LabsGetActions.csproj
+		SccProjectName6 = GetActions
+		SccAuxPath6 = http://vstfpg15:8080/tfs/sbg_athena
+		SccLocalPath6 = GetActions
+		SccProvider6 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName7 = core\\LabsCore.csproj
+		SccProjectName7 = core
+		SccAuxPath7 = http://vstfpg15:8080/tfs/sbg_athena
+		SccLocalPath7 = core
+		SccProvider7 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0393B2BF-5CED-45BC-9CEA-AAFCC5572DA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0393B2BF-5CED-45BC-9CEA-AAFCC5572DA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0393B2BF-5CED-45BC-9CEA-AAFCC5572DA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0393B2BF-5CED-45BC-9CEA-AAFCC5572DA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDDC0B6B-8B64-4AA5-8098-871AB46771D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDDC0B6B-8B64-4AA5-8098-871AB46771D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDDC0B6B-8B64-4AA5-8098-871AB46771D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDDC0B6B-8B64-4AA5-8098-871AB46771D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{668917F0-327C-4D85-9F5B-1474C0A6BD91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{668917F0-327C-4D85-9F5B-1474C0A6BD91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{668917F0-327C-4D85-9F5B-1474C0A6BD91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{668917F0-327C-4D85-9F5B-1474C0A6BD91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2329FD2A-BF29-4CE3-B62A-3BDCBF6F56B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2329FD2A-BF29-4CE3-B62A-3BDCBF6F56B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2329FD2A-BF29-4CE3-B62A-3BDCBF6F56B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2329FD2A-BF29-4CE3-B62A-3BDCBF6F56B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6027592-8076-4561-B107-B11FBB3939C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6027592-8076-4561-B107-B11FBB3939C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6027592-8076-4561-B107-B11FBB3939C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6027592-8076-4561-B107-B11FBB3939C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6A26115-3225-4096-B2EB-E97BFCE63442}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6A26115-3225-4096-B2EB-E97BFCE63442}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6A26115-3225-4096-B2EB-E97BFCE63442}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6A26115-3225-4096-B2EB-E97BFCE63442}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0ECB2E8-AB4D-4AA8-B7DE-76FA45B3A17A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0ECB2E8-AB4D-4AA8-B7DE-76FA45B3A17A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0ECB2E8-AB4D-4AA8-B7DE-76FA45B3A17A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0ECB2E8-AB4D-4AA8-B7DE-76FA45B3A17A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77D123FF-F7AE-41D9-997C-968A12328A46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77D123FF-F7AE-41D9-997C-968A12328A46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77D123FF-F7AE-41D9-997C-968A12328A46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77D123FF-F7AE-41D9-997C-968A12328A46}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
