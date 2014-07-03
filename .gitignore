@@ -1,1 +1,4 @@
 node_modules/
+obj/
+bin/
+*.swp
