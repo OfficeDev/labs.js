@@ -34,23 +34,33 @@ module Labs {
         }
 
         /**
-         * Creates a new lab. This prepares the lab storage and saves the host version
+         * Creates a new lab editor. This prepares the lab storage and saves the host version if it hasn't already
+         * been provisioned.
          *
          * @param { labsInternal } LabsInternal to use with the editor
          * @param { doneCallback } Callback to invoke when the editor is finished
          * @param { callback } Callback fired once the LabEditor has been created
          */
         static Create(labsInternal: LabsInternal, doneCallback: Function, callback: Core.ILabCallback<LabEditor>) {
-            labsInternal.create((err, data) => {
-                if (err) {
-                    setTimeout(() => callback(err, null), 0);
-                    return;
-                }
-
+            // Check to see if storage for the lab has already been created - in which case there is no need to 
+            // reserve the space. Otherwise reserve it prior to creating the lab
+            if (labsInternal.isCreated()) {                
                 // Instantiate the components and then attach them to the lab
                 var labEditor = new LabEditor(labsInternal, doneCallback);
                 setTimeout(() => callback(null, labEditor), 0);
-            });
+            }
+            else {                
+                labsInternal.create((err, data) => {
+                    if (err) {
+                        setTimeout(() => callback(err, null), 0);
+                        return;
+                    }
+
+                    // Instantiate the components and then attach them to the lab
+                    var labEditor = new LabEditor(labsInternal, doneCallback);
+                    setTimeout(() => callback(null, labEditor), 0);
+                });
+            }            
         }
 
         /**

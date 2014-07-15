@@ -33,7 +33,7 @@ module WebPageApp {
 
         private _labEditor: Labs.LabEditor;
         private _labInstance: Labs.LabInstance;
-        private _modeSwitchP: JQueryPromise<void> = $.when();
+        private _modeSwitchP: JQueryPromise<void> = $.when<void>();
 
         constructor(mode: Labs.Core.LabMode) {
             // Create observable properties
@@ -107,8 +107,8 @@ module WebPageApp {
          */
         private switchToMode(mode: Labs.Core.LabMode) {
             // wait for any previous mode switch to complete before performing the new one
-            this._modeSwitchP = this._modeSwitchP.then(() => {
-                var switchedStateDeferred = $.Deferred();
+            this._modeSwitchP = this._modeSwitchP.then<void>(() => {
+                var switchedStateDeferred = $.Deferred<void>();
 
                 // End any existing operations
                 if (this._labInstance) {
@@ -137,13 +137,13 @@ module WebPageApp {
         }
 
         private switchToEditMode(): JQueryPromise<void> {
-            var editLabDeferred = $.Deferred();
+            var editLabDeferred = $.Deferred<Labs.LabEditor>();
             Labs.editLab(createCallback(editLabDeferred));
 
-            return editLabDeferred.promise().then((labEditor) => {
+            return editLabDeferred.promise().then<void>((labEditor) => {
                 this._labEditor = labEditor;
 
-                var configurationDeferred = $.Deferred();
+                var configurationDeferred = $.Deferred<Labs.Core.IConfiguration>();
                 labEditor.getConfiguration(createCallback(configurationDeferred));
 
                 return configurationDeferred.promise().then((configuration) => {
@@ -160,16 +160,16 @@ module WebPageApp {
         }
 
         private switchToShowMode(): JQueryPromise<void> {
-            var takeLabDeferred = $.Deferred();
+            var takeLabDeferred = $.Deferred<Labs.LabInstance>();
             Labs.takeLab(createCallback(takeLabDeferred));
 
-            return takeLabDeferred.promise().then((labInstance) => {
+            return takeLabDeferred.promise().then<void>((labInstance) => {
                 this._labInstance = labInstance;
 
                 var activityComponentInstance = <Labs.Components.ActivityComponentInstance> this._labInstance.components[0];
                 this.uri(activityComponentInstance.component.data.uri);
 
-                var attemptsDeferred = $.Deferred();
+                var attemptsDeferred = $.Deferred<Labs.Components.ActivityComponentAttempt[]>();
                 activityComponentInstance.getAttempts(createCallback(attemptsDeferred));
                 var attemptP = attemptsDeferred.promise().then((attempts) => {
                     var currentAttemptDeferred = $.Deferred();
@@ -180,7 +180,7 @@ module WebPageApp {
                     }
 
                     return currentAttemptDeferred.then((currentAttempt: Labs.Components.ActivityComponentAttempt) => {
-                        var resumeDeferred = $.Deferred();
+                        var resumeDeferred = $.Deferred<void>();
                         currentAttempt.resume(createCallback(resumeDeferred));
                         return resumeDeferred.promise().then(() => {
                             return currentAttempt;
@@ -189,7 +189,7 @@ module WebPageApp {
                 });
 
                 return attemptP.then((attempt: Labs.Components.ActivityComponentAttempt) => {
-                    var completeDeferred = $.Deferred();
+                    var completeDeferred = $.Deferred<void>();
                     if (attempt.getState() !== Labs.ProblemState.Completed) {
                         attempt.complete(createCallback(completeDeferred));
                     } else {

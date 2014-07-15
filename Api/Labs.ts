@@ -134,11 +134,13 @@ module Labs {
     export function editLab(callback: Core.ILabCallback<LabEditor>) {
         checkIsConnected();
 
-        if (_labInstance !== null) {
-            throw "Lab is being taken";
+        if (_labInstance !== null) {            
+            setTimeout(() => callback("Lab is being taken", null));
+            return;
         }
         if (_labEditor !== null) {
-            throw "Lab edit already in progress";
+            setTimeout(() => callback("Lab edit already in progress", null));
+            return;
         }
 
         LabEditor.Create(
@@ -161,10 +163,12 @@ module Labs {
         checkIsConnected();
 
         if (_labEditor !== null) {
-            throw "Lab is being edited";
+            setTimeout(()=> callback("Lab is being edited", null));
+            return;
         }
         if (_labInstance !== null) {
-            throw "Lab already in progress";
+            setTimeout(() => callback("Lab already in progress", null));
+            return;
         }
 
         LabInstance.Create(

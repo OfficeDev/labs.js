@@ -85,7 +85,7 @@ module Labs {
                         
             // Get the message - we only listen to events going to our lab ID and that are valid JSON
             var messageEvent = <MessageEvent> event;
-            var message: Message
+            var message: Message;
             try {
                 message = <Message> JSON.parse(messageEvent.data);
             } catch (exception) {
@@ -117,11 +117,10 @@ module Labs {
             }
             else if (message.type == MessageType.Message) {
                 this.messageHandler(messageEvent.source, message.payload, (err, data) => {
-                    var source: Window = messageEvent.source;
-                    var message = new Message(message.id, this._labId, err ? MessageType.Failure : MessageType.Completion, data);                        
+                    var responseMessage = new Message(message.id, this._labId, err ? MessageType.Failure : MessageType.Completion, data);                        
                     
                     try {
-                        this.postMessage(messageEvent.source, message);
+                        this.postMessage(messageEvent.source, responseMessage);
                     } catch (exceptoin) {
                         // We simply drop any messages should there be an error during the postMessage - at this point 
                         // we have lost the ability to communicate with that source

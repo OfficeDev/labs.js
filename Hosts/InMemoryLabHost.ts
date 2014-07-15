@@ -22,8 +22,9 @@ module Labs {
 
     export class InMemoryLabHost implements Labs.Core.ILabHost {
         private _version: Labs.Core.IVersion;
-        private _labState: Labs.InMemoryLabState = new Labs.InMemoryLabState();
+        private _labState: Labs.InMemoryLabState = null;
         private _messages: IHostMessage[] = [];
+        private _initializationInfo: Labs.Core.IConfigurationInfo = null;
 
         constructor(version: Labs.Core.IVersion) {
             this._version = version;
@@ -41,9 +42,7 @@ module Labs {
         //
         connect(versions: Labs.Core.ILabHostVersionInfo[], callback: Labs.Core.ILabCallback<Labs.Core.IConnectionResponse>) {
             var connectionResponse: Labs.Core.IConnectionResponse = {
-                initializationInfo: {
-                    hostVersion: this._version
-                },
+                initializationInfo: this._initializationInfo,
                 hostVersion: {
                     major: 0,
                     minor: 1
@@ -92,13 +91,34 @@ module Labs {
         }
 
         create(options: Labs.Core.ILabCreationOptions, callback: Labs.Core.ILabCallback<void>) {
+            this._initializationInfo = {
+                hostVersion: this._version
+            };
+            this._labState = new Labs.InMemoryLabState();
+
             setTimeout(()=> callback(null, null), 0);
+        }
+
+        //
+        // Verifies that the lab has been created and throws if it has not been
+        //
+        private verifyLabCreated(callback: Labs.Core.ILabCallback<any>) : boolean {
+            if (!this._initializationInfo) {
+                setTimeout(()=> callback("Lab has not been created", null));
+                return false;
+            } else {
+                return true;
+            }
         }
 
         //
         // Gets the current lab configuration from the host
         //
         getConfiguration(callback: Labs.Core.ILabCallback<Labs.Core.IConfiguration>) {
+            if (!this.verifyLabCreated(callback)) {
+                return;
+            }
+
             var configuration = this._labState.getConfiguration();
             setTimeout(()=> callback(null, configuration), 0);
         }
@@ -107,6 +127,10 @@ module Labs {
         // Sets a new lab configuration on the host
         //
         setConfiguration(configuration: Labs.Core.IConfiguration, callback: Labs.Core.ILabCallback<void>) {
+            if (!this.verifyLabCreated(callback)) {
+                return;
+            }
+
             this._labState.setConfiguration(configuration);
             setTimeout(()=> callback(null, null), 0);
         }
@@ -115,6 +139,10 @@ module Labs {
         // Gets the current state of the lab for the user
         //
         getState(callback: Labs.Core.ILabCallback<any>) {
+            if (!this.verifyLabCreated(callback)) {
+                return;
+            }
+
             var state = this._labState.getState();
             setTimeout(()=> callback(null, state));
         }
@@ -123,11 +151,19 @@ module Labs {
         // Sets the state of the lab for the user
         //
         setState(state: any, callback: Labs.Core.ILabCallback<void>) {
+            if (!this.verifyLabCreated(callback)) {
+                return;
+            }
+
             this._labState.setState(state);
             setTimeout(()=> callback(null, null), 0);
         }
 
         getConfigurationInstance(callback: Labs.Core.ILabCallback<Labs.Core.IConfigurationInstance>) {
+            if (!this.verifyLabCreated(callback)) {
+                return;
+            }
+
             var configurationInstance = this._labState.getConfigurationInstance();
             setTimeout(()=> callback(null, configurationInstance), 0);
         }
@@ -135,6 +171,10 @@ module Labs {
         takeAction(type: string, options: Labs.Core.IActionOptions, callback: Labs.Core.ILabCallback<Labs.Core.IAction>);
         takeAction(type: string, options: Labs.Core.IActionOptions, result: Labs.Core.IActionResult, callback: Labs.Core.ILabCallback<Labs.Core.IAction>);
         takeAction(type: string, options: Labs.Core.IActionOptions, result: any, callback?: Labs.Core.ILabCallback<Labs.Core.IAction>) {
+            if (!this.verifyLabCreated(callback)) {
+                return;
+            }
+
             var translatedCallback = callback !== undefined ? callback : result;
             var translatedResult = callback !== undefined ? result : null;
 
@@ -143,6 +183,10 @@ module Labs {
         }
 
         getActions(type: string, options: Labs.Core.IGetActionOptions, callback: Labs.Core.ILabCallback<Labs.Core.IAction[]>) {
+            if (!this.verifyLabCreated(callback)) {
+                return;
+            }
+
             var actions = this._labState.getActions(type, options);
             setTimeout(()=> callback(null, actions), 0);
         }

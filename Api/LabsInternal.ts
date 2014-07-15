@@ -61,12 +61,7 @@ module Labs {
          * Helper class to manage events in the system
          */
         private _eventManager = new Labs.EventManager();
-
-        /**
-         * The cached configuration and state for the lab
-         */
-        private _configuration: Core.IConfiguration;
-
+        
         /**
          * The version of the host this LabsInternal is making use of
          */
@@ -81,6 +76,16 @@ module Labs {
          * Pending messages to invoke from the EventManager
          */ 
         private _pendingMessages: PendingMessage[] = [];
+
+        /**
+         * Whether or not the lab has been created
+         */
+        private _created: boolean = false;
+
+        /**
+         * Information stored with a create attempt
+         */ 
+        private _createInfo: Labs.Core.IConfigurationInfo;
 
         /**
          * Constructs a new LabsInternal
@@ -120,9 +125,12 @@ module Labs {
                 if (!err) {
                     // Set the initialization state
                     this._state = LabsInternalState.Initialized;
-
+                    
                     // Save the host version used
                     this._hostVersion = initialState.hostVersion;
+
+                    // Store the created state for the lab
+                    this._createInfo = initialState.initializationInfo;
 
                     // Register for messages coming from the host
                     this._labHost.on((message, messageData) => {
@@ -158,8 +166,21 @@ module Labs {
             this.checkIsInitialized();
 
             this._labHost.create({}, (err, editData) => {
+                this._createInfo = {
+                    hostVersion: this._hostVersion
+                };  
+
                 setTimeout(() => callback(err, editData));
             });
+        }
+
+        /**
+         * Returns whether or not the lab has been created
+         */
+        isCreated() {
+            this.checkIsInitialized();
+
+            return this._createInfo !== null;
         }
 
         /**

@@ -18,14 +18,22 @@ module Labs {
         private _handlers: { (event: string, data: any): void; }[] = [];
         private _activeMode: Labs.Core.LabMode;
         private _version: Core.ILabHostVersionInfo = { version: { major: 0, minor: 1 } };
-        private _labState: Labs.InMemoryLabState = new Labs.InMemoryLabState();
+        private _labState: Labs.InMemoryLabState = null;
         private _createdHostVersion: Labs.Core.IVersion;
         private _activeViewP: IPromise;
+        private _configurationInfo: Labs.Core.IConfigurationInfo = null;
 
         constructor(configuration: Labs.Core.IConfiguration, createdHostVersion: Labs.Core.IVersion) {
-            this._labState.setConfiguration(configuration);
-            this._createdHostVersion = createdHostVersion;            
-
+            // Construct the configuration info and lab state if the lab was previously created            
+            if (this._createdHostVersion) {
+                this._configurationInfo = { hostVersion: this._createdHostVersion };
+                this._labState = new Labs.InMemoryLabState();
+                this._labState.setConfiguration(configuration);
+                this._createdHostVersion = createdHostVersion;  
+            } else {
+                this._configurationInfo = null;
+            }            
+                        
             // Get the current active view and pass it to the initialization method
             var activeViewResolver = new Resolver();
             Office.context.document.getActiveViewAsync((result: any) => {
@@ -56,9 +64,7 @@ module Labs {
             // verify versions are supported
             this._activeViewP.then(() => {
                 var connectionResponse: Labs.Core.IConnectionResponse = {
-                    initializationInfo: {
-                        hostVersion: this._createdHostVersion
-                    },
+                    initializationInfo: this._configurationInfo,
                     hostVersion: {
                         major: 0,
                         minor: 1
@@ -101,17 +107,41 @@ module Labs {
             }            
         }
 
+        //
+        // Verifies that the lab has been created and throws if it has not been
+        //
+        private verifyLabCreated(callback: Labs.Core.ILabCallback<any>): boolean {
+            if (!this._configurationInfo) {
+                setTimeout(() => callback("Lab has not been created", null));
+                return false;
+            } else {
+                return true;
+            }
+        }
+
         create(options: Labs.Core.ILabCreationOptions, callback: Labs.Core.ILabCallback<void>) {
             // Store the options in the config settings. replace anything that is already there                                    
             this._createdHostVersion = this._version.version;
+            this._configurationInfo = { hostVersion: this._createdHostVersion };
+            this._labState = new Labs.InMemoryLabState();
+            this._labState.setConfiguration(null);
+
             this.updateStoredLabsState(callback);
         }
 
         getConfiguration(callback: Labs.Core.ILabCallback<Labs.Core.IConfiguration>) {
+            if (!this.verifyLabCreated(callback)) {
+                return;
+            }
+
             setTimeout(() => callback(null, this._labState.getConfiguration()), 0);
         }
 
         setConfiguration(configuration: Labs.Core.IConfiguration, callback: Labs.Core.ILabCallback<void>) {
+            if (!this.verifyLabCreated(callback)) {
+                return;
+            }
+
             this._labState.setConfiguration(configuration);
             this.updateStoredLabsState(callback);
         }
@@ -129,14 +159,26 @@ module Labs {
         }
 
         getConfigurationInstance(callback: Labs.Core.ILabCallback<Labs.Core.IConfigurationInstance>) {
+            if (!this.verifyLabCreated(callback)) {
+                return;
+            }
+
             setTimeout(() => callback(null, this._labState.getConfigurationInstance()));
         }
 
         getState(callback: Labs.Core.ILabCallback<any>) {
+            if (!this.verifyLabCreated(callback)) {
+                return;
+            }
+
             setTimeout(() => callback(null, this._labState.getState()));
         }
 
         setState(state: any, callback: Labs.Core.ILabCallback<void>) {
+            if (!this.verifyLabCreated(callback)) {
+                return;
+            }
+
             this._labState.setState(state);
             setTimeout(() => callback(null, null));
         }
@@ -144,6 +186,10 @@ module Labs {
         takeAction(type: string, options: Labs.Core.IActionOptions, callback: Labs.Core.ILabCallback<Labs.Core.IAction>);
         takeAction(type: string, options: Labs.Core.IActionOptions, result: Labs.Core.IActionResult, callback: Labs.Core.ILabCallback<Labs.Core.IAction>);
         takeAction(type: string, options: Labs.Core.IActionOptions, result: any, callback?: Labs.Core.ILabCallback<Labs.Core.IAction>) {
+            if (!this.verifyLabCreated(callback)) {
+                return;
+            }
+
             var translatedCallback = callback !== undefined ? callback : result;
             var translatedResult = callback !== undefined ? result : null;
 
@@ -152,7 +198,11 @@ module Labs {
         }
 
         getActions(type: string, options: Labs.Core.IGetActionOptions, callback: Labs.Core.ILabCallback<Labs.Core.IAction[]>) {
+            if (!this.verifyLabCreated(callback)) {
+                return;
+            }
+
             setTimeout(() => callback(null, this._labState.getActions(type, options)));
-        }
+        }        
     }
 }

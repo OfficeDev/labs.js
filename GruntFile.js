@@ -134,8 +134,7 @@ module.exports = function(grunt) {
                     src: ['bin/tests/**/*.ts'],
                     options: {
                         module: 'commonjs',
-                        target: 'es5',
-                        sourcemap: true
+                        target: 'es5'
                     }
                 },
                 simplelab: {
@@ -144,20 +143,16 @@ module.exports = function(grunt) {
                         'bin/sdk/labs-' + pkg.version + '.d.ts', 
                         'bin/sdk/typings/jquery/jquery.d.ts',
                         'bin/sdk/typings/knockout/knockout.d.ts'],
-                    dest: [''],
                     options: {
                         module: 'commonjs',
-                        target: 'es5',
-                        sourcemap: false
+                        target: 'es5'
                     }
                 },
                 labshost: {
                     src: ['bin/sdk/labshost.ts'],
-                    dest: [''],
                     options: {
                         module: 'commonjs',
-                        target: 'es5',
-                        sourcemap: true
+                        target: 'es5'
                     }
                 }
             }

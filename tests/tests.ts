@@ -143,12 +143,12 @@ function connectAndSetEmptyConfiguration() {
             analytics: null
         };
 
-        var setConfigurationDeferred = $.Deferred();
+        var setConfigurationDeferred = $.Deferred<void>();
         editor.setConfiguration(configuration, makeJQueryPromise(setConfigurationDeferred));
     
         // And now set that we are done editing the lab
         return setConfigurationDeferred.promise().then(() => {
-            var doneDeferred = $.Deferred();
+            var doneDeferred = $.Deferred<void>();
             editor.done(makeJQueryPromise(doneDeferred));
             return doneDeferred.promise();
         });
@@ -166,12 +166,12 @@ function connectAndSetConfiguration(configuration: Labs.Core.IConfiguration) {
 
     // Go and create the empty lab
     return labEditorP.then((editor: Labs.LabEditor) => {        
-        var setConfigurationDeferred = $.Deferred();
+        var setConfigurationDeferred = $.Deferred<void>();
         editor.setConfiguration(configuration, makeJQueryPromise(setConfigurationDeferred));
 
         // And now set that we are done editing the lab
         return setConfigurationDeferred.promise().then(() => {
-            var doneDeferred = $.Deferred();
+            var doneDeferred = $.Deferred<void>();
             editor.done(makeJQueryPromise(doneDeferred));
             return doneDeferred.promise();
         });
@@ -207,7 +207,7 @@ asyncTest("test edit configuration", () => {
                 analytics: null
             };
 
-            var setConfigurationDeferred = $.Deferred();
+            var setConfigurationDeferred = $.Deferred<void>();
             editor.setConfiguration(configuration, makeJQueryPromise(setConfigurationDeferred));
             return setConfigurationDeferred.promise();
         });
@@ -226,7 +226,7 @@ asyncTest("test edit configuration", () => {
 
         // And now set that we are done editing the lab
         return getConfigurationP.then(() => {
-            var doneDeferred = $.Deferred();
+            var doneDeferred = $.Deferred<void>();
             editor.done(makeJQueryPromise(doneDeferred));
             return doneDeferred.promise().then(() => {
                 Labs.disconnect();
@@ -264,13 +264,13 @@ asyncTest("Test Take Lab State", () => {
         });
 
         var setStateP = getStateP.then(() => {
-            var setStateDeferred = $.Deferred();
+            var setStateDeferred = $.Deferred<void>();
             labInstance.setState({ foo: 'bar'}, makeJQueryPromise(setStateDeferred));
             return setStateDeferred.promise();
         });
 
         var checkStateP = setStateP.then(() => {
-            var checkStateDeferred = $.Deferred();
+            var checkStateDeferred = $.Deferred<any>();
             labInstance.getState(makeJQueryPromise(checkStateDeferred));
             return checkStateDeferred.then((state) => {
                 equal(state.foo, 'bar');
@@ -278,7 +278,7 @@ asyncTest("Test Take Lab State", () => {
         });
 
         var doneP = checkStateP.then(() => {
-            var doneDeferred = $.Deferred();
+            var doneDeferred = $.Deferred<void>();
             labInstance.done(makeJQueryPromise(doneDeferred));
             return doneDeferred.promise();
         });
@@ -295,7 +295,7 @@ function createAndTakeDefaultLab(): JQueryPromise<Labs.LabInstance> {
 
 function createAndTakeLab(configuration: Labs.Core.IConfiguration): JQueryPromise<Labs.LabInstance> {
     var createdConfigurationP = connectAndSetConfiguration(configuration);
-    return createdConfigurationP.then(() => {
+    return createdConfigurationP.then<Labs.LabInstance>(() => {
         var takeLabDeferred = $.Deferred();
         Labs.takeLab(makeJQueryPromise(takeLabDeferred));
         return takeLabDeferred.promise();
@@ -312,7 +312,7 @@ asyncTest("Test Get Instance Configuration", () => {
         equal(choiceComponentInstance._id, "0");
 
         // Create a new attempt
-        var getZeroAttemptsDeferred = $.Deferred();
+        var getZeroAttemptsDeferred = $.Deferred<Labs.Components.ChoiceComponentAttempt[]>();
         choiceComponentInstance.getAttempts(makeJQueryPromise(getZeroAttemptsDeferred));
         var getZeroAttemptsP = getZeroAttemptsDeferred.promise().then((attempts)=> {
             equal(0, attempts.length);
@@ -325,7 +325,7 @@ asyncTest("Test Get Instance Configuration", () => {
         });
 
         var attemptActionsP = createAttemptP.then((attempt: Labs.Components.ChoiceComponentAttempt) => {
-            var singleAttemptDeferred = $.Deferred();
+            var singleAttemptDeferred = $.Deferred<Labs.Components.ChoiceComponentAttempt[]>();
             choiceComponentInstance.getAttempts(makeJQueryPromise(singleAttemptDeferred));
             return singleAttemptDeferred.promise().then((attempts)=> {
                 equal(1, attempts.length);
@@ -333,7 +333,7 @@ asyncTest("Test Get Instance Configuration", () => {
         });
 
         var doneP = attemptActionsP.then(()=> {
-            var doneDeferred = $.Deferred();
+            var doneDeferred = $.Deferred<void>();
             labInstance.done(makeJQueryPromise(doneDeferred));
             return doneDeferred.promise();
         });
@@ -350,7 +350,7 @@ function connectAndTake(): JQueryPromise<Labs.LabInstance> {
     Labs.connect(makeJQueryPromise(connectionDeferred));
 
     // and then take the lab
-    return connectionDeferred.promise().then(() => {
+    return connectionDeferred.promise().then<Labs.LabInstance>(() => {
         var takeLabDeferred = $.Deferred();
         Labs.takeLab(makeJQueryPromise(takeLabDeferred));
         return takeLabDeferred.promise();
@@ -366,7 +366,7 @@ asyncTest("Test Attempt Actions", () => {
         var attemptDeferred = $.Deferred();
         choiceComponentInstance.createAttempt(makeJQueryPromise(attemptDeferred));
         var attemptP = attemptDeferred.promise().then((attempt: Labs.Components.ChoiceComponentAttempt) => {
-            var resumeDeferred = $.Deferred();
+            var resumeDeferred = $.Deferred<void>();
             attempt.resume(makeJQueryPromise(resumeDeferred));
             return resumeDeferred.promise().then(()=> attempt);
         });
@@ -400,7 +400,7 @@ asyncTest("Test Attempt Actions", () => {
         });
         
         var doneP = attemptFinishedP.then(() => {
-            var doneDeferred = $.Deferred();
+            var doneDeferred = $.Deferred<void>();
             labInstance.done(makeJQueryPromise(doneDeferred));
             return doneDeferred.promise();
         });
@@ -419,7 +419,7 @@ asyncTest("Test Attempt Actions", () => {
             var resumedAttempt = attemptsDeferred.promise().then((attempts: Labs.Components.ChoiceComponentAttempt[])=> {
                 equal(1, attempts.length);
 
-                var resumeDeferred = $.Deferred();
+                var resumeDeferred = $.Deferred<void>();
                 attempts[0].resume(makeJQueryPromise(resumeDeferred));
                 return resumeDeferred.then(()=> attempts[0]);
             });
@@ -432,7 +432,7 @@ asyncTest("Test Attempt Actions", () => {
                 equal(attempt.getValues("hints")[0].hasBeenRequested, true);
                 equal(attempt.getValues("hints")[1].hasBeenRequested, true);
 
-                var doneDeferred = $.Deferred();
+                var doneDeferred = $.Deferred<void>();
                 labInstance.done(makeJQueryPromise(doneDeferred));
                 return doneDeferred.promise();
             });
@@ -467,7 +467,7 @@ asyncTest("Test Activity Attempt Actions", () => {
         var attemptDeferred = $.Deferred();
         activityComponentInstance.createAttempt(makeJQueryPromise(attemptDeferred));
         var attemptP = attemptDeferred.promise().then((attempt: Labs.Components.ActivityComponentAttempt) => {
-            var resumeDeferred = $.Deferred();
+            var resumeDeferred = $.Deferred<void>();
             attempt.resume(makeJQueryPromise(resumeDeferred));
             return resumeDeferred.promise().then(() => attempt);
         });
@@ -475,7 +475,7 @@ asyncTest("Test Activity Attempt Actions", () => {
         var attemptFinishedP = attemptP.then((attempt: Labs.Components.ActivityComponentAttempt) => {
             equal(attempt.getState(), Labs.ProblemState.InProgress);
 
-            var attemptCompleteDeferred = $.Deferred();
+            var attemptCompleteDeferred = $.Deferred<void>();
             attempt.complete(makeJQueryPromise(attemptCompleteDeferred));
 
             var attemptCheckedP = attemptCompleteDeferred.promise().then(()=> {
@@ -486,7 +486,7 @@ asyncTest("Test Activity Attempt Actions", () => {
         });
 
         var doneP = attemptFinishedP.then(() => {
-            var doneDeferred = $.Deferred();
+            var doneDeferred = $.Deferred<void>();
             labInstance.done(makeJQueryPromise(doneDeferred));
             return doneDeferred.promise();
         });
@@ -505,7 +505,7 @@ asyncTest("Test Activity Attempt Actions", () => {
             var resumedAttempt = attemptsDeferred.promise().then((attempts: Labs.Components.ActivityComponentAttempt[]) => {
                 equal(1, attempts.length);
 
-                var resumeDeferred = $.Deferred();
+                var resumeDeferred = $.Deferred<void>();
                 attempts[0].resume(makeJQueryPromise(resumeDeferred));
                 return resumeDeferred.then(() => attempts[0]);
             });
@@ -514,7 +514,7 @@ asyncTest("Test Activity Attempt Actions", () => {
                 // Verify everything matches
                 equal(attempt.getState(), Labs.ProblemState.Completed);
 
-                var doneDeferred = $.Deferred();
+                var doneDeferred = $.Deferred<void>();
                 labInstance.done(makeJQueryPromise(doneDeferred));
                 return doneDeferred.promise();
             });
@@ -554,7 +554,7 @@ asyncTest("Test Input Attempt Actions", () => {
         var attemptDeferred = $.Deferred();
         inputComponentInstance.createAttempt(makeJQueryPromise(attemptDeferred));
         var attemptP = attemptDeferred.promise().then((attempt: Labs.Components.InputComponentAttempt) => {
-            var resumeDeferred = $.Deferred();
+            var resumeDeferred = $.Deferred<void>();
             attempt.resume(makeJQueryPromise(resumeDeferred));
             return resumeDeferred.promise().then(() => attempt);
         });
@@ -588,7 +588,7 @@ asyncTest("Test Input Attempt Actions", () => {
         });
 
         var doneP = attemptFinishedP.then(() => {
-            var doneDeferred = $.Deferred();
+            var doneDeferred = $.Deferred<void>();
             labInstance.done(makeJQueryPromise(doneDeferred));
             return doneDeferred.promise();
         });
@@ -607,7 +607,7 @@ asyncTest("Test Input Attempt Actions", () => {
             var resumedAttempt = attemptsDeferred.promise().then((attempts: Labs.Components.InputComponentAttempt[]) => {
                 equal(1, attempts.length);
 
-                var resumeDeferred = $.Deferred();
+                var resumeDeferred = $.Deferred<void>();
                 attempts[0].resume(makeJQueryPromise(resumeDeferred));
                 return resumeDeferred.then(() => attempts[0]);
             });
@@ -620,7 +620,7 @@ asyncTest("Test Input Attempt Actions", () => {
                 equal(attempt.getValues("hints")[0].hasBeenRequested, true);
                 equal(attempt.getValues("hints")[1].hasBeenRequested, true);
 
-                var doneDeferred = $.Deferred();
+                var doneDeferred = $.Deferred<void>();
                 labInstance.done(makeJQueryPromise(doneDeferred));
                 return doneDeferred.promise();
             });
@@ -670,7 +670,7 @@ asyncTest("Test take with no configuration", ()=> {
             return $.when();
         },
         (message) => {
-            equal(message, "No configuration set");
+            equal(message, "Lab has not been created");
             ok(true, "Failed");
             return $.when();
         });
@@ -689,7 +689,7 @@ function testInputComponent(inputComponentInstance: Labs.Components.InputCompone
     var attemptDeferred = $.Deferred();
     inputComponentInstance.createAttempt(makeJQueryPromise(attemptDeferred));
     var attemptP = attemptDeferred.promise().then((attempt: Labs.Components.InputComponentAttempt) => {
-        var resumeDeferred = $.Deferred();
+        var resumeDeferred = $.Deferred<void>();
         attempt.resume(makeJQueryPromise(resumeDeferred));
         return resumeDeferred.promise().then(() => attempt);
     });
@@ -726,10 +726,10 @@ function testInputComponent(inputComponentInstance: Labs.Components.InputCompone
 function verifyInputComponent(inputComponentInstance: Labs.Components.InputComponentInstance) {
     var attemptsDeferred = $.Deferred();
     inputComponentInstance.getAttempts(makeJQueryPromise(attemptsDeferred));
-    var resumedAttempt = attemptsDeferred.promise().then((attempts: Labs.Components.InputComponentAttempt[]) => {
+    var resumedAttempt = attemptsDeferred.promise().then<Labs.Components.InputComponentAttempt>((attempts: Labs.Components.InputComponentAttempt[]) => {
         equal(1, attempts.length);
 
-        var resumeDeferred = $.Deferred();
+        var resumeDeferred = $.Deferred<void>();
         attempts[0].resume(makeJQueryPromise(resumeDeferred));
         return resumeDeferred.then(() => attempts[0]);
     });
@@ -798,13 +798,13 @@ asyncTest("Test Dynamic Component Actions", () => {
         });
 
         var closeDynamicProblemP = createdComponentsP.then(() => {
-            var closeDeferred = $.Deferred();
+            var closeDeferred = $.Deferred<void>();
             dynamicComponentInstance.close(makeJQueryPromise(closeDeferred));
             return closeDeferred.promise();
         });
                 
         var doneP = closeDynamicProblemP.then(() => {
-            var doneDeferred = $.Deferred();
+            var doneDeferred = $.Deferred<void>();
             labInstance.done(makeJQueryPromise(doneDeferred));
             return doneDeferred.promise();
         });
@@ -827,7 +827,7 @@ asyncTest("Test Dynamic Component Actions", () => {
                 equal(closed, true)
             });
 
-            var checkComponentsDeferred = $.Deferred();
+            var checkComponentsDeferred = $.Deferred<Labs.ComponentInstanceBase[]>();
             dynamicComponentInstance.getComponents(makeJQueryPromise(checkComponentsDeferred));
             var componentsCheckP = checkComponentsDeferred.promise().then((components) => {
                 equal(components.length, 1)
@@ -843,7 +843,7 @@ asyncTest("Test Dynamic Component Actions", () => {
             });
 
             return verifiedComponentsP.then(() => {
-                var doneDeferred = $.Deferred();
+                var doneDeferred = $.Deferred<void>();
                 labInstance.done(makeJQueryPromise(doneDeferred));
                 return doneDeferred.promise();
             });
