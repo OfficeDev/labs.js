@@ -1,0 +1,827 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Labs.js</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap -->
+    <link href="//ajax.aspnetcdn.com/ajax/bootstrap/3.0.3/css/bootstrap.css" rel="stylesheet" />
+    <style>
+        h5 {
+            font-weight: bold;
+        }
+
+        .labs-footer {
+            border-top: 1px solid #eeeeee;
+            text-align: center;
+            margin-top: 25px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Labs.js JavaScript API for Office Mix - Preview</h1>
+
+        <div class="section">
+            <div class="page-header">
+                <h1>Overview</h1>
+            </div>
+
+            <p>
+                Labs.js is an API that allows applications (also known as labs) to integrate with an Office Mix lesson.
+                By writing against the API an application can easily be
+                run within the PowerPoint authoring tool as well as in the online lesson player.
+                It is designed to be a lightweight API that is simple and can easily be plugged in to existing applications.
+                The underlying core is also designed to be run across multiple platforms.
+                All a platform needs is to implement the underlying driver interfaces and any app targeted towards Labs.js will run on it.
+            </p>
+            <p>
+                This guide is divided into the following sections:
+            </p>
+
+            <ul>
+                <li>
+                    <a href="#setup">Setup</a>
+                    Describes the setup tasks needed to start developing labs with Labs.js.
+                </li>
+                <li>
+                    <a href="#apioverview">API Overview</a>
+                    Provides an overview description of how to make use of the API.
+                </li>
+                <li>
+                    <a href="#reference">Reference</a>
+                    Links to reference documentation for the various classes within the API.
+                </li>
+                <li>
+                    <a href="#terms">API Terms and Conditions</a>
+                    Terms and conditions for the API.
+                </li>
+            </ul>
+
+            <h3>Files in the SDK</h3>
+            <p>
+                There are a handfull of files included in the SDK for labs.js development
+            </p>
+            <ul>
+                <li>
+                    <a href="labs-[labs-version].js">labs-[labs-version].js</a>
+                    The JavaScript API for Office Mix labs development. This file needs to be included in your project in order to integrate with Office Mix. The file is also hosted on
+                    a CDN at https://az592748.vo.msecnd.net/sdk/LabsJS-[labs-version]/labs-[labs-version].js. For publishing your app you must link to the file on the CDN.
+                </li>
+                <li>
+                    <a href="labs-[labs-version].d.ts">labs-[labs-version].d.ts</a>
+                    TypeScript definition file for labs.js. This makes it possible to easily integrate your TypeScript code with labs.js.
+                    The definition file also provides a broad overview of all the components contained in labs.js. You can download TypeScript from <a href="http://www.typescriptlang.org/">http://www.typescriptlang.org/</a>.
+                    The definition file was built against TypeScript 0.9.1.1.
+                </li>
+                <li>
+                    <a href="HISTORY.txt">History</a>
+                    Release history for the different version of labs.js.
+                </li>
+                <li>
+                    <a href="labshost.html">labshost.html</a>
+                    Web page that provides a way to view and debug your lab against Office Mix, outside of the context of PowerPoint.
+                    Simply type in your URL to the main input box and it will load within the frame.
+                    Data exchanged between the API and Office Mix when running in PowerPoint or the Office Mix lesson player will show up in the input boxes to
+                    the right. The data can also be preseeded. The <a href="#examples">examples</a> section
+                    provides examples of existing Office Mix apps running in the context of the host.
+                </li>
+                <li>
+                    <a href="SampleManifest.xml">SampleManifest.xml</a>
+                    A sample Office Apps manifest to use as a template for creating your own application manifest.
+                </li>
+                <li>
+                    <a href="simplelab.html">simplelab.html</a>
+                    A sample lab created with labs.js. Allows for the selection of a web page and insertion of a web page. Which tracks the user viewing it.
+                </li>
+                <li>
+                    <a href="simplelab.ts">simplelab.ts</a>
+                    The TypeScript file used to create simplelab. Also available is the JavaScript version <a href="simplelab.js">simplelab.js</a>. Both are
+                    sample code showing the use of the JavaScript API.
+                </li>
+            </ul>
+
+            <h3 id="examples">Examples</h3>
+            <p>
+                The following provides a brief list of existing labs created for Office Mix using labs.js.
+            </p>
+            <ul>
+                <li><a href="labshost.html?lab=https://athenadevapps.cloudapp.net/Quiz/TrueFalse?PostMessageLabHost">True/False</a></li>
+                <li><a href="labshost.html?lab=https://athenadevapps.cloudapp.net/Quiz/MultipleChoice?PostMessageLabHost">Multiple Choice</a></li>
+                <li><a href="labshost.html?lab=https://athenadevapps.cloudapp.net/Quiz/FreeResponse?PostMessageLabHost">Free Response</a></li>
+                <li><a href="labshost.html?lab=https://athenadevapps.cloudapp.net/Poll/Poll?PostMessageLabHost">Poll</a></li>
+                <li><a href="labshost.html?lab=simplelab.html?PostMessageLabHost">Simple Lab</a></li>
+            </ul>
+
+            <h3 id="help">Getting help</h3>
+            <p>
+                For help, feature requests, comments, issues, etc... don't hesitate to send mail to <a href="mailto:labsjs@microsoft.com">labsjs@microsoft.com</a>
+            </p>
+
+            <h3 id="data-sharing">Data Sharing</h3>
+            <p>
+                You can configure the Labs.js JavaScript API for Office Mix to share information with Microsoft about
+                how a user interacts with your app, such as whether the app loaded successfully, any content that is displayed to the user in your app, and
+                any information the user enters in your app. Microsoft may combine this information with other information to provide the Office Mix service
+                in accordance with the statement on <a href="http://aka.ms/privacy-onlinelearning">Privacy &amp; Cookies</a> for Office Mix. If you configure the API in this way, we require (and you agree) that
+                you will include a notice to this effect in the privacy terms for your app as follows:
+            </p>
+            <p>
+                This app for Office will share information with Microsoft about how you interact with it, such as whether the app loaded successfully,
+                any content that is displayed to you in the app, and any information you enter in the app. Microsoft may combine this information with
+                other information to provide the Office Mix service in accordance with the statement on <a href="http://aka.ms/privacy-onlinelearning">Privacy &amp; Cookies</a> for Office Mix. By using this
+                app, you consent to the app sharing information with Microsoft for this purpose.
+            </p>
+        </div>
+
+        <!-- Setup section -->
+        <div class="section" id="setup">
+            <div class="page-header">
+                <h1>Setup</h1>
+            </div>
+            <p>
+                The following sections describes the steps necessary for doing Labs.js development.
+            </p>
+            <p>
+                Office Mix utilizes <a href="http://msdn.microsoft.com/en-US/office/dn448457">Apps for Office</a> in order to integrate interactive content within
+                a PowerPoint slide deck. To lab developers the details of Office.js, the API for Apps for Office, are abstracted behind the labs.js API. But in order
+                to develop an Office Mix application you will need to set yourself up as an Apps for Office developer.
+            </p>
+        </div>
+
+        <!-- Initialization Section -->
+        <h2>Register for an Office 365 Developer Site</h2>
+        <p>
+            The first step is to register for an Office 365 developer site. This will give you a place where you can host your applications prior to submitting
+            them to the store for approval. Also, hosting on a developer site will allow you to publish any of these apps to Office Mix and try it out in our live
+            environment.
+        </p>
+        <p>
+            Instructions on how to do this can be found by visiting this link:
+            <a href="http://msdn.microsoft.com/library/office/fp179924(v=office.15)">http://msdn.microsoft.com/library/office/fp179924(v=office.15)</a>
+        </p>
+        <p>
+            You only need to follow the first two steps. Making use of "Napa" is optional. Once you create your site it will be provisioned. Once SharePoint
+            has been provisioned you can move on to the next step. Note that it can take a bit of time to fully provision your developer site.
+        </p>
+
+        <h2>Set up an app catalog on SharePoint Online</h2>
+        <p>
+            The next step is to set up an app catalog on SharePoint Online. An app catalog is used to host apps specific to an individual organization. For Office Mix
+            we make use of an app catalog to be able to insert pre-production apps into a lesson and test it out end to end prior to submitting the app to the store.
+        </p>
+        <p>
+            Instructions on this process can be found here:
+            <a href="http://msdn.microsoft.com/en-us/library/1d50a571-6e02-4bc0-a3d6-6ef1eca3c2ce(Office.1501401)">http://msdn.microsoft.com/en-us/library/1d50a571-6e02-4bc0-a3d6-6ef1eca3c2ce(Office.1501401)</a>
+        </p>
+
+        <h2>Create your application manifest</h2>
+        <p>
+            The application manifest is an XML document that describes your lab app. It contains a URL reference to where the app is hosted as well as various details about it.
+            These include display name, description, icons, default starting size, etc... A sample manifest is contained below.
+        </p>
+        <p>
+            The SDK also comes with a sample manifest: <a href="SampleManifest.xml">SampleManifest.xml</a>. You can also navigate to
+            <a href="http://msdn.microsoft.com/en-us/library/office/fp161044(v=office.15).aspx">http://msdn.microsoft.com/en-us/library/office/fp161044(v=office.15).aspx</a> to find more detailed information
+            about the schema as well as a link to the schema definition.
+        </p>
+        <h3>Sample manifest</h3>
+<pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;OfficeApp xmlns=&quot;http://schemas.microsoft.com/office/appforoffice/1.1&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:type=&quot;ContentApp&quot;&gt;
+  &lt;Id&gt;[GUID in the form EDA37F5A-13F1-4CB6-BA6A-4B2D2ED0A783]&lt;/Id&gt;
+  &lt;Version&gt;[Version in the form 1.0.0.0]&lt;/Version&gt;
+  &lt;ProviderName&gt;[Provider Name]&lt;/ProviderName&gt;
+  &lt;DefaultLocale&gt;en-US&lt;/DefaultLocale&gt;
+  &lt;DisplayName DefaultValue=&quot;[Display Name]&quot;&gt;
+  &lt;/DisplayName&gt;
+  &lt;Description DefaultValue=&quot;[Description]&quot;&gt;
+  &lt;/Description&gt;
+  &lt;IconUrl DefaultValue=&quot;[32x32px icon URL]&quot;&gt;
+  &lt;/IconUrl&gt;
+  &lt;HighResolutionIconUrl DefaultValue=&quot;[96x96px icon URL]&quot;&gt;
+  &lt;/HighResolutionIconUrl&gt;
+  &lt;SupportUrl DefaultValue=&quot;[Support URL]&quot;&gt;&lt;/SupportUrl&gt;
+  &lt;Hosts&gt;
+    &lt;Host Name=&quot;Presentation&quot;/&gt;
+  &lt;/Hosts&gt;  
+  &lt;DefaultSettings&gt;
+    &lt;SourceLocation DefaultValue=&quot;[URL to application]&quot;&gt;&lt;/SourceLocation&gt;
+    &lt;!-- Max values for the below is 1000px --&gt;
+    &lt;RequestedWidth&gt;960&lt;/RequestedWidth&gt; 
+    &lt;RequestedHeight&gt;540&lt;/RequestedHeight&gt;
+  &lt;/DefaultSettings&gt;
+  &lt;Permissions&gt;Restricted&lt;/Permissions&gt;
+  &lt;!-- Whether to take an application snapshot as a preview. Need to be careful if this could expose information that should be no shown (i.e. the answer) --&gt;
+  &lt;AllowSnapshot&gt;true&lt;/AllowSnapshot&gt;
+&lt;/OfficeApp&gt;
+</pre>
+
+        <h2>Upload your application manifest to your SharePoint site</h2>
+        <p>
+            Once you have an app catalog created and have your first manifest you are now ready to submit your application to your catalog. Navigate to your application
+            catalog (usually https://[your site]/sites/AppCatalog). Then click on the "new app" button and follow the steps to upload your application manifest. Once this
+            succeeds your catalog now contains your newly submitted app.
+        </p>
+
+        <h2>Update your PowerPoint app catalog and log in with your developer account</h2>
+        <p>
+            These instructions can also be found at the beginning of the document referenced above about setting up an app catalog
+            (<a href="http://msdn.microsoft.com/en-us/library/1d50a571-6e02-4bc0-a3d6-6ef1eca3c2ce(Office.1501401)">http://msdn.microsoft.com/en-us/library/1d50a571-6e02-4bc0-a3d6-6ef1eca3c2ce(Office.1501401)</a>)
+        </p>
+        <p>
+            Open up PowerPoint and then navigate to: <b>File > Options > Trust Center > Trust Center Settings > Trusted App Catalogs</b>.
+        </p>
+        <p>
+            From here add a reference to your app catalog. Click OK and PowerPoint will ask you to sign out for the changes to take place. Do this.
+        </p>
+        <p>
+            The last step then is to log in under the developer account. In the upper-right corner of PowerPoint you will see your login name. Click on this and log in under
+            your developer account. You are now all ready to insert your app.
+        </p>
+
+        <h2>Insert your app</h2>
+        <p>
+            After you've changed the app catalog, restarted PowerPoint for the change to take affect, and changed your login name you are now ready to insert an application.
+        </p>
+        <p>
+            To do so click on the <b>Insert</b> ribbon item. Then find <b>Store</b> in the <b>Apps</b> section. Click on this button to open the "Apps for Office" dialog. Now
+            click on <b>My Organization</b> and you should see the apps in your app catalog. Now simply click on whichever one you want, choose insert, and your app will be
+            inserted within the PowerPoint document.
+        </p>
+
+        <h2>Publish and View</h2>
+        <p>
+            You can now make use of all the usual Office Mix functionality to publish your lesson with your new app.
+        </p>
+        <p>
+            <b>Note</b> however when you go to view the application you will need to log in to your SharePoint catalog with the same browser that you view your lesson from.
+            SharePoint catalogs only allow access from authenticated users and so in order to see your application you need to log in first. That way when the app attempts
+            to contact the catalog to determine its manifest it can load.
+        </p>
+
+        <h2>Submit to Office Store</h2>
+        <p>
+            Publishing instructions are available here:
+            <a href="http://msdn.microsoft.com/en-US/office/dn448457#publish">http://msdn.microsoft.com/en-US/office/dn448457#publish</a>. You will need to follow
+            the instructions in the "Publish your app to the Office Store" section.
+        </p>
+        <p>
+            Note that a current limitation of the store is that only one login account be used to submit apps. For cases when access needs to be shared
+            amongst multiple people the recomendation is to create a shared account.
+        </p>
+
+        <!-- API Overview -->
+        <div class="section" id="apioverview">
+            <div class="page-header">
+                <h1>API Overview</h1>
+            </div>
+
+            <h2>Scripts</h2>
+
+            <h3>Office.js</h3>
+            <p>
+                Office.js is required for connecting with both PowerPoint as well as when within the Office Mix. It needs to be included
+                in addition to labs.js.
+            </p>
+<pre>
+&lt;script src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js" type="text/javascript"&gt;&lt;/script&gt;
+</pre>
+
+            <h3>Labs.js</h3>
+            <p>
+                Contained within the SDK this file needs to be included in order to make use of the API described in this document.
+                This file will soon be hosted on a CDN as well.
+            </p>
+            <pre>
+&lt;script src="https://az592748.vo.msecnd.net/sdk/LabsJS-[labs-version]/labs-[labs-version].min.js" type="text/javascript"&gt;&lt;/script&gt;
+</pre>
+
+
+            <h2>Error handling and Callbacks</h2>
+            <p>
+                Many methods in the labs.js API operate asynchronously. For these operations the API adopts a standard
+                <a href="LabsCore.html#Labs.Core-ILabCallback">callback interface</a>.
+            </p>
+            <pre>
+function(err, result) {
+}
+</pre>
+            <p>
+                If there is an error the <i>err</i> field will be non-null. If the operation was successful <i>err</i> will be
+                null and <i>result</i> will contain the result of the operation. The callback will never be fired immediately even
+                if the result is available. It will always execute on a separate execution of the JavaScript event loop (via a setTimeout call).
+            </p>
+            <p>
+                By adoping this callback definition it is easy and possible to integrate labs.js in with your promise API of choice.
+                For example, jQuery promises can be substituted for these callbacks with a simple translation method.
+            </p>
+            <pre>
+function createCallback&lt;T&gt;(deferred: JQueryDeferred&lt;T&gt;): Labs.Core.ILabCallback&lt;T&gt; {
+    return (err, data) => {
+        if (err) {
+            deferred.reject(err);
+        }
+        else {
+            deferred.resolve(data);
+        }
+    };
+}            
+</pre>
+            <h2>Times</h2>
+            <p>
+                All timestamps stored in lab.js store the number of milliseconds since 1 January, 1970 UTC, matching the JavaScript Date object.
+            </p>
+
+            <h2>Lab host and DefaultLabHost</h2>
+            <p>
+                The lab host is the underlying driver used in lab development. By default this is set to a host that integrates with Office.js. For testing, and to
+                run the app within the labshost.html, this needs to be swapped with a host that works within the simulation environment. An example of doing this via a
+                query parameter is shown below. Changing the DefaultHostBuilder can also be used to integrate in a lab app to a different platform.
+            </p>
+            <pre>
+Labs.DefaultHostBuilder = function () {
+    if (window.location.href.indexOf("PostMessageLabHost") !== -1) {
+        return new Labs.PostMessageLabHost("test", parent, "*");
+    } else {
+        return new Labs.OfficeJSLabHost();
+    }
+};
+</pre>
+
+            <h2>Initialization</h2>
+            <p>
+                Initialiation is responsible for setting up communication between the lab and the host of the lab. Once initialization is complete the other API
+                methods can be called.
+            </p>
+            <p>
+
+            </p>
+            <pre>
+Labs.connect((err, connectionResponse) => {    
+});
+</pre>
+            <p>
+                The <a href="LabsCore.html#Labs.Core-IConnectionResponse">connectionResponse</a> parameter contains information about the host, user and other connection
+                related information. See the documentation for details on the values returned.
+            </p>
+
+            <h2>Lab Configuration and Editing</h2>
+            <p>
+                Office Mix provides API methods for lab developers to get and set their lab configuration. The configuration is used to indicate to
+                Office Mix what type of lab is being created as well as what type of data the lab will send back. This information is used in the collection
+                and visualization of analytics.
+            </p>
+
+            <h3>Getting the lab editor</h3>
+            <p>
+                The <a href="LabsApi.html#Labs-LabEditor">LabEditor</a> provies the ability to edit and configure the lab. With it you can set the configuration for the lab and get
+                the configuration for the lab. Only one labEditor can be open at any given time. When done editing the lab you need to call the <b>done</b>
+                method. Done is not required to be called. But must be called before either taking the lab or opening another lab editor.
+            </p>
+            <pre>
+Labs.editLab((err, labEditor) => {
+    if (err) {
+        handleError();
+        return;
+    }
+    _labEditor = labEditor;
+});
+</pre>
+            <h3>Configuration and Components</h3>
+            <p>
+                The get and set configuration methods allow you to store the configuration for the lab. The configuration indicates
+                to Office Mix what data will be collected and processed by the lab. A <a href="LabsCore.html#Labs.Core-IConfiguration">configuration</a>
+                contains general information about a lab including the name, version, and other configuration options. The major
+                part is it's definition of components.
+            </p>
+            <p>
+                Components are the building blocks of a lab. Examples of a component are a multiple choice problem, a free response problem,
+                or an activity like viewing a web page. Certain components, such as the DynamicComponent, allow for the creation of
+                groups of components or quiz banks at run time.
+            </p>
+            <p>
+                Office Mix currently supports the following types of components.
+                <ul>
+                    <li id="activity-component">
+                        <b><a href="LabsComponents.html#Labs.Components-IActivityComponent">ActivityComponent</a></b>
+                        An activity component represents an activity the user must complete. Examples of this include reading a piece of text,
+                        watching a video, or interacting with a simulation.
+                    </li>
+                    <li id="choice-component">
+                        <b><a href="LabsComponents.html#Labs.Components-IChoiceComponent">ChoiceComponent</a></b>
+                        A choice component presents the user with a list of choices from which the user must select. There may or may not be
+                        an answer and single or multiple responses may be supported. This is used for true false, multiple choice, multiple response and
+                        poll problems.
+                    </li>
+                    <li id="input-component">
+                        <b><a href="LabsComponents.html#Labs.Components-IInputComponent">InputComponent</a></b>
+                        An input component allows for free form input by the user. Examples could be free response, essays, math problems,
+                        etc...
+                    </li>
+                    <li id="dynamic-component">
+                        <b><a href="LabsComponents.html#Labs.Components-IDynamicComponent">DynamicComponent</a></b>
+                        A dynamic component is one that can generate other components at run time. This can be used for branching questions,
+                        dynamically generating problems at run time, or creating quiz banks.
+                    </li>
+                </ul>
+            </p>
+
+            <h3>Set and get configuration</h3>
+            <p>
+                To set the configuration simply create the configuration object and then call the <b>setConfiguration</b> method.
+            </p>
+            <pre>
+var activityComponent: Labs.Components.IActivityComponent = {
+    type: Labs.Components.ActivityComponentType,
+    name: uri,
+    values: {},
+    data: {
+        uri: uri
+    },
+    secure: false
+};
+var configuration = {
+    appVersion: { major: 1, minor: 1 },
+    components: [activityComponent],
+    name: configurationName,
+    timeline: null,
+    analytics: null
+};
+this._labEditor.setConfiguration(configuration, (err, unused) => { })
+</pre>
+            <p>
+                To then retrieve the configuration call the getConfiguration method on the lab editor.
+            </p>
+            <pre>
+labEditor.getConfiguration((err, configuration) => {
+});
+</pre>
+
+            <h3>Closing the editor</h3>
+            <p>
+                Once done editing the lab the <b>done</b> method can be called on the editor to indicate that
+                editing is complete. Only one instance of the editor can be open at any given time. And you cannot
+                both take and edit a lab. Calling done indicates that the lab can be edited again or taken again.
+            </p>
+            <pre>
+labEditor.done((err) => {    
+});
+</pre>
+
+            <!-- Interactions -->
+            <h2>Interacting with a Lab</h2>
+            <p>
+                Once a lab configuration has been set the lab can now be interacted with. When running within PowerPoint these interactions are simulated.
+                When running within the Office Mix lesson player the data is sent to the Office Mix back end for storage and use in analytics.
+            </p>
+
+            <h3>Getting the lab instance</h3>
+            <p>
+                The <a href="LabsApi.html#Labs-LabInstance">LabInstance</a> is used for all interactions with a lab. It is an instance of the configured lab
+                for the current user. It is used to record and retrieve per user lab data. To take the lab simply call the <b>takeLab</b> method that exists
+                on the Labs object.
+            </p>
+            <pre>
+Labs.takeLab((err, labInstance) => {
+    this._labInstance = labInstance;
+    var activityComponentInstance = &lt;Labs.Components.ActivityComponentInstance&gt; this._labInstance.components[0];
+    // populate the UI based on the instance    
+});
+</pre>
+            <p>
+                Once retieved the instance contains an array of <a href="LabsApi.html#Labs-ComponentInstanceBase">component instances</a> that map to
+                the components specified in the configuration. An instance is simply a transformed version of the configuration. The transformation is used
+                to attach server side IDs to objects as well as to hide certain fields from the user when applicable (hints, answers, etc...).
+                The API also provides a higher level set of functions on top of the raw instance data to aid in performance and usability.
+            </p>
+
+            <h3>State</h3>
+            <p>
+                State is temporary storage associated with a user taking the lab. It is a scratch space for developers to use to store information they
+                would like to retrieve between loads of the lab. As an example a programming lab could store the user's current work in the scratch space.
+                Changes to state do not cause any analytic computations to take place. It is always interpreted as a black box.
+            </p>
+            <h4>Setting State</h4>
+            <pre>
+labInstance.setState(this._labState(), (err, unused) => { 
+    // If no error state has successfully been stored by the host
+});
+</pre>
+            <h4>Getting State</h4>
+            <pre>
+labInstance.getState((err, state) => {
+    // If no error the state parameter contains the set state
+});
+</pre>
+
+            <h3>Component Instances and Results</h3>
+            The following provides an overview of the component instances that exist for the various types of components and short examples of the methods contained on them.
+            The API guide provides more detailed descriptions of the methods and properties of these objects.
+
+            <h4>Common Concepts</h4>
+            <p>
+                This section outlines concepts that are common across component types.
+            </p>
+
+            <h5>Attempts</h5>
+            <p>
+                An attempt is a distinct attempt at the problem posed by a component. Creating a new attempt indicates the user is starting a new attempt
+                at a particular exercise. As an example, if the exercise is a multiple choice question, beginning a new attempt should place the lab in
+                its regular initial state. The Office Mix analytics will then aggregate how the user does for that particular exercise at the attempt level.
+            </p>
+            <p>
+                A component allows for the retrieval of all attempts associated with it via the <b>getAttempts</b> method. From these the user can then
+                decide to either create a new attempt with the <b>createAttempt</b> method or use one of the existing attempts. Prior to making use of a
+                retrieved attempt it must first be resumed via the <b>resume</b> method. The following provides an example of this process.
+            </p>
+            <pre>
+var attemptsDeferred = $.Deferred();
+activityComponentInstance.getAttempts(createCallback(attemptsDeferred));
+var attemptP = attemptsDeferred.promise().then((attempts) => {
+    var currentAttemptDeferred = $.Deferred();
+    if (attempts.length > 0) {
+        currentAttemptDeferred.resolve(attempts[attempts.length - 1]);
+    } else {
+        activityComponentInstance.createAttempt(createCallback(currentAttemptDeferred));
+    }
+    return currentAttemptDeferred.then((currentAttempt: Labs.Components.ActivityComponentAttempt) => {
+        var resumeDeferred = $.Deferred();
+        currentAttempt.resume(createCallback(resumeDeferred));
+        return resumeDeferred.promise().then(() => {
+            return currentAttempt;
+        });
+    });
+});
+</pre>
+            <p>
+                This concept exists for all component types except for the dynamic component.
+            </p>
+
+            <h5>Values</h5>
+            <p>
+                All components contain a dictionary that maps from a key to an array of values that can be used to store
+                hints, feedback, or any other common list of values associated with the component. The component instance provides
+                access to these values and the data they represent. Querying for a hint value causes the analytics to mark that the user
+                took a hint. And for a secure quiz (not yet implemented) the value in the instance will be hidden from the user
+                until they explicitly request access to it. Values are tracked on a per-attempt basis.
+            </p>
+            <pre>
+// Take a hint
+var hints = attempt.getValues("hints");
+hints[0].getValue((err, hint) => {
+    // If no error hint will contain the hint data
+});
+</pre>
+
+            <h4>ActivityComponentInstance</h4>
+            <p>
+                An <a href="LabsComponents.html#Labs.Components-ActivityComponentInstance">ActivityComponentInstance</a> is used to track a user's interaction with an
+                <a href="#activity-component">activity component</a>.
+                It allows for attempts at the activity to be tracked. Within
+                an <a href="LabsComponents.html#Labs.Components-ActivityComponentAttempt">ActivityComponentAttempt</a> the primary method to be called is complete. The complete
+                method indicates that the user has finished the activity. This could happen upon finishing the task assigned in the simulation or after viewing a given reading.
+            </p>
+            <pre>
+attempt.complete((err, unused) => { 
+    // Called once the host has stored the completion
+});
+</pre>
+
+            <h4>ChoiceComponentInstance</h4>
+            <p>
+                A <a href="LabsComponents.html#Labs.Components-ChoiceComponentInstance">ChoiceComponentInstance</a> is used to track a user's interaction with a
+                <a href="#choice-component">choice component</a>.
+                The <a href="LabsComponents.html#Labs.Components-ChoiceComponentAttempt">ChoiceComponentAttempt</a> is used to track attempts at the component. The primary
+                methods contained within this class are <b>getSubmissions</b> and <b>submit</b>. The former retrieves any previous submissions while the latter allows for a
+                new one to be stored.
+            </p>
+            <h5>Get Submissions</h5>
+            <pre>
+var submissions = this._attempt.getSubmissions();
+</pre>
+
+            <h5>Submit</h5>
+            <p>
+                The <a href="LabsComponents.html#Labs.Components-ChoiceComponentAnswer">ChoiceComponentAnswer</a> indicates the submitted answer and the
+                <a href="LabsComponents.html#Labs.Components-ChoiceComponentResult">ChoiceComponentResult</a> contains the result. The result is optional
+                and if not specified the API will grade the submission (this is not currently supported but will be in a future release). The return value is a
+                <a href="LabsComponents.html#Labs.Components-ChoiceComponentSubmission">ChoiceComponentSubmission</a> which contains the answer, result and also
+                the timestamp indicating when the result was submitted.
+            </p>
+            <pre>
+this._attempt.submit(
+    new Labs.Components.ChoiceComponentAnswer(submission), 
+    new Labs.Components.ChoiceComponentResult(correct, complete), 
+    (err, submission) => {
+        // Called once the server has processed the submission
+    });
+</pre>
+
+            <h4>InputComponentInstance</h4>
+            <p>
+                An <a href="LabsComponents.html#Labs.Components-InputComponentInstance">InputComponentInstance</a> is used to track a user's interaction with an
+                <a href="#input-component">input component</a>.
+                The <a href="LabsComponents.html#Labs.Components-InputComponentAttempt">InputComponentAttempt</a> is used to track attempts at the component. The primary
+                methods contained within this class are <b>getSubmissions</b> and <b>submit</b>. The former retrieves any previous submissions while the latter allows for a
+                new one to be stored.
+            </p>
+            <h5>Get Submissions</h5>
+            <pre>
+var submissions = this._attempt.getSubmissions();
+</pre>
+
+            <h5>Submit</h5>
+            <p>
+                The <a href="LabsComponents.html#Labs.Components-InputComponentAnswer">InputComponentAnswer</a> indicates the submitted answer and the
+                <a href="LabsComponents.html#Labs.Components-InputComponentResult">InputComponentResult</a> contains the result. The result is optional
+                and if not specified the API will grade the submission (this is not currently supported but will be in a future release). The return value is a
+                <a href="LabsComponents.html#Labs.Components-InputComponentSubmission">InputComponentSubmission</a> which contains the answer, result and also
+                the timestamp indicating when the result was submitted.
+            </p>
+            <pre>
+this._attempt.submit(
+    new Labs.Components.InputComponentAnswer(submission), 
+    new Labs.Components.InputComponentResult(correct, complete), 
+    (err, submission) => {
+        // Called once the server has processed the submission
+    });
+</pre>
+
+            <h4>DynamicComponentInstance</h4>
+            <p>
+                A <a href="LabsComponents.html#Labs.Components-DynamicComponentInstance">DynamicComponentInstance</a> is used to track a user's interaction with a
+                <a href="#dynamic-component">dynamic component</a>. A dynamic component allows for the creation of new components at runtime. The primary methods
+                for a dynamic component are <b>getComponents</b>, <b>createComponent</b>, and <b>close</b>. All of which are explained below.
+            </p>
+
+            <h5>Get Components</h5>
+            <p>Retrieves the list of previously created component instances</p>
+            <pre>
+dynamicComponentInstance.getComponents((err, components) => {
+    // Upon success components contains a list of previously created component instances
+});
+</pre>
+
+            <h5>Create component</h5>
+            <p>
+                Constructs a new component, returning the instance that component creates.
+            </p>
+            <pre>
+var inputComponentHints = [];
+for (var i = 0; i < data.hints.length; i++) {
+    inputComponentHints.push({
+        isHint: true,
+        value: data.hints[i]        
+    });
+}
+var inputComponent = {
+    maxScore: 1,
+    timeLimit: 0,
+    hasAnswer: true,
+    answer: data.answerData.solution,
+    type: Labs.Components.InputComponentType,
+    name: data.name,
+    values: { hints: inputComponentHints },
+    secure: false
+};
+var currentAttemptDeferred = $.Deferred();
+var dynamicComponent = labInstance.components[0];
+dynamicComponent.createComponent(inputComponent, function(err, inputComponentInstance) {
+    // Create will return the instance for the specified component
+})
+</pre>
+            <h5>Close</h5>
+            <p>
+                The close method is used to indicate no more components will be created by the dynamic component.
+                The instance also has a <b>isClosed</b> method to see if the attempt was previously closed.
+            </p>
+            <pre>
+dynamicComponentInstance.close((err, unused) => {
+    // Called once the server has processed the close attempt
+});
+</pre>
+
+            <!-- Events -->
+            <h2>Events</h2>
+            <p>
+                The events API tracks lab specific events and allows the application developer to add handlers to deal with them. Events include things like the mode changing from
+                edit to view while within PowerPoint. Or activation methods coming from the lesson player indicating the app is now displayed on the current slide or is no longer
+                contained on the active slide.
+            </p>
+
+            <h3>Mode change</h3>
+            <p>
+                The mode changed event is fired when the lab changes from "edit" to "view" mode. Edit mode is shown when in the editor mode in PowerPoint. View mode is shown when in
+                slide show mode in PowerPoint or when being displayed within the Office Mix lesson player. The view mode should display what hte user will see when taking the lab. The edit lab should
+                allow the user to configure the lab. The <a href="LabsHostsCore.html#Labs.Core-ModeChangedEventData">ModeChangedEventData</a> data passed to the callback contains information on the current mode.
+            </p>
+
+            <pre>
+Labs.on(Labs.Core.EventTypes.ModeChanged, (data) => {
+    var modeChangedEvent = &lt;Labs.Core.ModeChangedEventData&gt; data;
+    this.switchToMode(modeChangedEvent.mode);
+});
+</pre>
+
+            <h3>Activate</h3>
+            <p>
+                The activate event is sent when when the slide the application is contained on becomes active within the lesson player.
+            </p>
+            <pre>
+Labs.on(Labs.Core.EventTypes.Activate, (data) => {
+    // App is now on the active slide
+});
+</pre>
+
+            <h3>Deactivate</h3>
+            <p>
+                The deactivate event is sent when when the slide the application is contained on is no longe the active slide.
+            </p>
+            <pre>
+Labs.on(Labs.Core.EventTypes.Deactivate, (data) => {                
+    // App is no longer on the active slide
+});
+</pre>
+
+            <!-- Timeline control -->
+            <h2>Timeline</h2>
+            <p>
+                The lab also has the ability to interact with the player timeline. Using the timeline allows the lab to tell the player to advance to te next slide.
+                The timeline object is found by calling the <b>Labs.getTimeline()</b> method.
+            </p>
+            <pre>
+Labs.getTimeline().next({}, (err, unused) => { });
+</pre>
+            <p>
+                These methods are currently only supported within the Office Mix lesson player. PowerPoint support is planned for the future.
+            </p>
+        </div>
+
+        <!-- Reference section -->
+        <div class="section" id="reference">
+            <div class="page-header">
+                <h1>API Reference</h1>
+            </div>
+            <p>
+                The following provides links to the API documentation for the components of Labs.js
+            </p>
+            <ul>
+                <li>
+                    <a href="LabsCore.html">Labs Core</a>
+                    Base set of definitions shared by the driver and API level of labs.js.
+                </li>
+                <li>
+                    <a href="LabsActions.html">Labs Actions</a>
+                    Actions are the operations a lab sends indicating its behavior. These are only visible to driver developers or those creating
+                    a new component.
+                </li>
+                <li>
+                    <a href="LabsGetActions.html">Labs Get Actions</a>
+                    Get actions allow for the querying of previously taken actions on the server.
+                </li>
+                <li>
+                    <a href="LabsApi.html">Labs API</a>
+                    Labs.js API definitions. This is the set of definitions lab developers will make use of.
+                </li>
+                <li>
+                    <a href="LabsComponents.html">Labs Components</a>
+                    Definitions for the components that make up the lab.
+                </li>
+                <li>
+                    <a href="LabsHostsCore.html">Labs Hosts Core</a>
+                    Base definitions for labs.js hosts. Useful when implementing the server side of the host. Included within the labs.js file to contain event definitions and
+                    other data that is coming from the Office Mix host.
+                </li>
+            </ul>
+        </div>
+
+        <div class="section" id="terms">
+            <div class="page-header">
+                <h1>API Terms and Conditions</h1>
+            </div>
+            <p>Labs.js and related files are Previews that are provided on the terms of the Microsoft Developer Services Agreement at <a href="http://msdn.microsoft.com/en-US/cc300389">http://msdn.microsoft.com/en-US/cc300389</a> (or a successor site).</p>
+
+            <p>
+                We may provide a hash-encrypted user ID through the "id" field in the IUserInfo structure or otherwise ("ID Hash") that does not provide any personally identifiable information to you, but can be used by you to identify repeat users of your app. If you request or use the ID Hash you agree, in addition to the applicable terms of the Microsoft Developer Services Agreement, that:
+                <ul>
+                    <li>The sole purpose of the ID Hash is to enable you to provide a better experience for a repeat user of the app. For example, you may wish to use the ID Hash so the app can remember the user's personalization choices, to give the user an option to sign up to your service after they have used your app ten times (rather than presenting this option each time), or to recommend app content that might be of interest to a user based on their previous use of the app.</li>
+                    <li>You must not use the ID Hash for advertising. You must not combine the ID Hash with other information that would allow you to recognize a user across different apps (or in any other context) over time.</li>
+                    <li>We may implement controls to: (a) allow users to turn the ID Hash off, and (b) allow users to clear the ID Hash. If users do so, you agree to respect those user choices and do everything necessary to honor them.</li>
+                    <li>You will implement appropriate safeguards to maintain the confidentiality and security of the ID Hash and any data you collect and associate with the ID Hash to prevent unauthorized access to or use of the ID Hash and such data.</li>
+                </ul>
+            </p>
+        </div>
+
+        <footer class="labs-footer">
+            <p>&copy; 2014 Microsoft </p>
+        </footer>
+
+
+        <script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.js"></script>
+        <script src="//ajax.aspnetcdn.com/ajax/bootstrap/3.0.3/bootstrap.js"></script>
+    </div>
+</body>
+</html>
+

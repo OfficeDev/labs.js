@@ -1,0 +1,2 @@
+1.0.4
+* Fixes a bug in rich client host where the initial mode was not correctly set
