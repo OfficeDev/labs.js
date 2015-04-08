@@ -19,53 +19,145 @@ module.exports = function(grunt) {
         process: stripReferences
     }; 
 
+    var defaultTypeScriptOptions = {
+        module: 'commonjs',
+        target: 'es5',
+        declaration: true,
+        sourceMap: true,
+        removeComments: true
+    };
+
+    // Source files for labs.js code. Note that due to how TypeScript builds the outputted files the order does matter.
+    // Base classes need to be defined before children, etc...
+    var labsCoreSrc = [
+        'core/IAction.ts', 
+        'core/IActionResult.ts', 
+        'core/IAction.ts', 
+        'core/IActionResult.ts', 
+        'core/IComponentInstance.ts', 
+        'core/IConfigurationInfo.ts', 
+        'core/IConnectionResponse.ts', 
+        'core/IGetActionOptions.ts',
+        'core/ILabCreationOptions.ts',
+        'core/ILabHostVersionInfo.ts',
+        'core/IActionOptions.ts',
+        'core/IMessage.ts',
+        'core/IMessageResponse.ts',
+        'core/IUserInfo.ts',
+        'core/IValueInstance.ts',
+        'core/IVersion.ts',
+        'core/IAnalyticsConfiguration.ts',
+        'core/ICompletionStatus.ts',
+        'core/ILabCallback.ts',
+        'core/ILabObject.ts',
+        'core/ITimelineConfiguration.ts',
+        'core/IUserData.ts',
+        'core/IValue.ts',
+        'core/IConfiguration.ts',
+        'core/IConfigurationInstance.ts',
+        'core/IComponent.ts',
+        'core/LabMode.ts',
+        'core/ILabHost.ts',
+        'core/Permissions.ts'];
+
+    var labsActionsSrc = [
+        'actions/ICloseComponent.ts',
+        'actions/ICreateAttemptOptions.ts',
+        'actions/ICreateAttemptResult.ts',
+        'actions/ICreateComponentOptions.ts',
+        'actions/ICreateComponentResult.ts',
+        'actions/IGetValueResult.ts',
+        'actions/ISubmitAnswerResult.ts',
+        'actions/IAttemptTimeoutOptions.ts',
+        'actions/IGetValueOptions.ts',
+        'actions/IResumeAttemptOptions.ts',
+        'actions/ISubmitAnswerOptions.ts',
+        'actions/References.ts'];
+
+    var labsGetActionsSrc = [
+        'GetActions/IGetComponentActionsOptions.ts',
+        'GetActions/IGetAttemptOptions.ts',
+        'GetActions/References.ts'];
+
+    var labsApiSrc = [
+        'api/IEventCallback.ts',
+        'api/ITimelineNextMessage.ts',
+        'api/References.ts',
+        'api/ComponentInstanceBase.ts',
+        'api/ComponentInstance.ts',
+        'api/ConnectionState.ts',
+        'api/EventManager.ts',
+        'api/LabEditor.ts',
+        'api/LabInstance.ts',
+        'api/Labs.ts',
+        'api/LabsInternal.ts',
+        'api/Timeline.ts',
+        'api/ValueHolder.ts'];
+
+    var labsComponentsSrc = [
+        'components/ComponentAttempt.ts',
+        'components/ActivityComponentAttempt.ts',
+        'components/ActivityComponentInstance.ts',
+        'components/ChoiceComponentAnswer.ts',
+        'components/ChoiceComponentAttempt.ts',
+        'components/ChoiceComponentInstance.ts',
+        'components/DynamicComponentInstance.ts',
+        'components/IActivityComponent.ts',
+        'components/IActivityComponentInstance.ts',
+        'components/IChoice.ts',
+        'components/IChoiceComponent.ts',
+        'components/IChoiceComponentInstance.ts',
+        'components/IDynamicComponent.ts',
+        'components/IDynamicComponentInstance.ts',
+        'components/IHint.ts',
+        'components/IInputComponent.ts',
+        'components/IInputComponentInstance.ts',
+        'components/InputComponentAnswer.ts',
+        'components/InputComponentAttempt.ts',
+        'components/InputComponentInstance.ts',
+        'components/InputComponentResult.ts',
+        'components/InputComponentSubmission.ts',
+        'components/ProblemState.ts',
+        'components/References.ts',
+        'components/ChoiceComponentResult.ts',
+        'components/ChoiceComponentSubmission.ts'];
+
+    var labsHostsCoreSrc = [
+        'HostsCore/Command.ts',
+        'HostsCore/CommandType.ts',
+        'HostsCore/EventTypes.ts',
+        'HostsCore/GetActionsCommandData.ts',
+        'HostsCore/MessageProcessor.ts',
+        'HostsCore/ModeChangedEvent.ts',
+        'HostsCore/References.ts',
+        'HostsCore/SendMessageCommandData.ts',
+        'HostsCore/TakeActionCommandData.ts'];
+
+    var labsHostsSrc = [        
+        'hosts/InMemoryLabHost.ts',
+        'hosts/InMemoryLabState.ts',
+        'hosts/OfficeJSLabHost.ts',
+        'hosts/PostMessageLabHost.ts',
+        'hosts/References.ts',
+        'hosts/RichClientOfficeJSLabsHost.ts'];
+
+    var labsServerSrc = [
+        'server/ILabEventProcessor.ts',
+        'server/LabHost.ts',
+        'server/References.ts'];
+
+    var labsTestSrc = [
+        'tests/jquery.d.ts',
+        'tests/qunit.d.ts',
+        'tests/underscore.d.ts'];
+                
     var pkg = grunt.file.readJSON('package.json');
     grunt.initConfig({
             pkg: pkg,
             qunit: {
                 all: [ 'bin/tests/index.html', 'bin/tests/index-min.html' ]
             },
-            shell: {
-                buildcore: {
-                    options: defaultShellOptions, 
-                    command: 'msbuild core/LabsCore.csproj'
-                },
-                buildactions: {
-                    options: defaultShellOptions, 
-                    command: 'msbuild Actions/LabsActions.csproj'
-                },
-                buildgetactions: {
-                    options: defaultShellOptions,
-                    command: 'msbuild GetActions/LabsGetActions.csproj'
-                },
-                buildapi: {
-                    options: defaultShellOptions,
-                    command: 'msbuild api/LabsApi.csproj'
-                },
-                buildcomponents: {
-                    options: defaultShellOptions, 
-                    command: 'msbuild components/LabsComponents.csproj'
-                },
-                buildhostscore: {
-                    options: defaultShellOptions, 
-                    command: 'msbuild hostscore/LabsHostsCore.csproj'
-                },
-                buildhosts: {
-                    options: defaultShellOptions, 
-                    command: 'msbuild hosts/LabsHosts.csproj'
-                },
-                buildserver: {
-                    options: defaultShellOptions, 
-                    command: 'msbuild server/LabsServer.csproj'
-                },
-                copytypings: {
-                    options: defaultShellOptions,
-                    command: 'xcopy /y bin\\*.d.ts ..\\labs\\Scripts\\typings\\labs'
-                },
-                copyjs: {
-                    options: defaultShellOptions,
-                    command: 'xcopy /s /i /y bin\\*.js ..\\labs\\Scripts\\labs'
-                },
+            shell: { 
                 builddocs: {
                     options: defaultShellOptions,
                     command: 'typescript-docs bin\\LabsCore.d.ts -o bin\\sdk\\LabsCore.html & typescript-docs bin\\LabsActions.d.ts -o bin\\sdk\\LabsActions.html & typescript-docs bin\\LabsGetActions.d.ts -o bin\\sdk\\LabsGetActions.html & typescript-docs bin\\LabsApi.d.ts -o bin\\sdk\\LabsApi.html  & typescript-docs bin\\LabsComponents.d.ts -o bin\\sdk\\LabsComponents.html & typescript-docs bin\\LabsHostsCore.d.ts -o bin\\sdk\\LabsHostsCore.html & typescript-docs bin\\LabsHosts.d.ts -o bin\\sdk\\LabsHosts.html & typescript-docs bin\\LabsServer.d.ts -o bin\\sdk\\LabsServer.html'
@@ -100,6 +192,14 @@ module.exports = function(grunt) {
                 }
             },
             copy: {
+                typings: {
+                    src: 'bin/**/*.d.ts',
+                    dest: 'labs/Scripts/typings/labs'
+                },
+                js: {
+                    src: 'bin/**/*.js',
+                    dest: 'labs/Scripts/labs'
+                },
                 sdk: {
                     src: 'sdk/**',
                     dest: 'bin/',
@@ -130,8 +230,48 @@ module.exports = function(grunt) {
                 }
             },
             typescript: {
+                core: {
+                    src: labsCoreSrc,
+                    dest: 'bin/LabsCore.js',
+                    options: defaultTypeScriptOptions
+                },
+                actions: {
+                    src: labsActionsSrc, 
+                    dest: 'bin/LabsActions.js',
+                    options: defaultTypeScriptOptions
+                },
+                getactions: {
+                    src: labsGetActionsSrc,
+                    dest: 'bin/LabsGetActions.js',
+                    options: defaultTypeScriptOptions
+                },
+                api: {
+                    src: labsApiSrc,
+                    dest: 'bin/LabsApi.js',
+                    options: defaultTypeScriptOptions
+                },
+                components: {
+                    src: labsComponentsSrc,
+                    dest: 'bin/LabsComponents.js',
+                    options: defaultTypeScriptOptions
+                },
+                hostscore: {
+                    src: labsHostsCoreSrc,
+                    dest: 'bin/LabsHostsCore.js',
+                    options: defaultTypeScriptOptions
+                },
+                hosts: {
+                    src: labsHostsSrc,
+                    dest: 'bin/LabsHosts.js',
+                    options: defaultTypeScriptOptions
+                },
+                server: {
+                    src: labsServerSrc,
+                    dest: 'bin/LabsServer.js',
+                    options: defaultTypeScriptOptions
+                },
                 test: {
-                    src: ['bin/tests/**/*.ts'],
+                    src: labsTestSrc,
                     options: {
                         module: 'commonjs',
                         target: 'es5'
@@ -159,14 +299,14 @@ module.exports = function(grunt) {
     });
 
     var buildTasks = [
-        'shell:buildcore', 
-        'shell:buildactions',
-        'shell:buildgetactions',
-        'shell:buildapi', 
-        'shell:buildcomponents', 
-        'shell:buildhostscore', 
-        'shell:buildhosts', 
-        'shell:buildserver'];
+        'typescript:core', 
+        'typescript:actions',
+        'typescript:getactions',
+        'typescript:api', 
+        'typescript:components', 
+        'typescript:hostscore', 
+        'typescript:hosts', 
+        'typescript:server'];
     var testTasks = [
         'copy:tests',
         'typescript:test',
@@ -179,7 +319,6 @@ module.exports = function(grunt) {
         'concat:labsserverjsdef',
         'typescript:labshost',
         'typescript:simplelab',
-        'shell:builddocs',
         'uglify'];
 
     grunt.loadNpmTasks('grunt-typescript');
@@ -193,5 +332,6 @@ module.exports = function(grunt) {
     grunt.registerTask('default', buildTasks.concat(sdkTasks).concat(testTasks));
     grunt.registerTask('tests', testTasks);
     grunt.registerTask('sdk', sdkTasks);
-    grunt.registerTask('publish', ['shell:copytypings', 'shell:copyjs']);
+    grunt.registerTask('docs', ['shell:builddocs']);
+    grunt.registerTask('publish', ['copy:typings', 'copy:js']);
 }

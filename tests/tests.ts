@@ -785,7 +785,7 @@ asyncTest("Test Dynamic Component Actions", () => {
         dynamicComponentInstance.isClosed(makeJQueryPromise(isClosedDeferred));
         var isClosedCheckP = isClosedDeferred.promise().then((closed)=> equal(closed, false));
 
-        var noComponentsDeferred = $.Deferred();
+        var noComponentsDeferred = $.Deferred<Labs.ComponentInstanceBase[]>();
         dynamicComponentInstance.getComponents(makeJQueryPromise(noComponentsDeferred));
         var noComponentsCheckP = noComponentsDeferred.promise().then((components)=> equal(components.length, 0));
 
