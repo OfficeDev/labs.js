@@ -147,9 +147,10 @@ module.exports = function(grunt) {
         'server/References.ts'];
 
     var labsTestSrc = [
-        'tests/jquery.d.ts',
-        'tests/qunit.d.ts',
-        'tests/underscore.d.ts'];
+        'bin/tests/jquery.d.ts',
+        'bin/tests/qunit.d.ts',
+        'bin/tests/underscore.d.ts',
+        'bin/tests/tests.ts'];
                 
     var pkg = grunt.file.readJSON('package.json');
     grunt.initConfig({
