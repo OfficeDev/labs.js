@@ -193,14 +193,6 @@ module.exports = function(grunt) {
                 }
             },
             copy: {
-                typings: {
-                    src: 'bin/**/*.d.ts',
-                    dest: 'labs/Scripts/typings/labs'
-                },
-                js: {
-                    src: 'bin/**/*.js',
-                    dest: 'labs/Scripts/labs'
-                },
                 sdk: {
                     src: 'sdk/**',
                     dest: 'bin/',
@@ -334,5 +326,4 @@ module.exports = function(grunt) {
     grunt.registerTask('tests', testTasks);
     grunt.registerTask('sdk', sdkTasks);
     grunt.registerTask('docs', ['shell:builddocs']);
-    grunt.registerTask('publish', ['copy:typings', 'copy:js']);
 }
