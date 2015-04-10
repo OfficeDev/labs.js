@@ -24,7 +24,7 @@ module Labs.Components {
         id: string;
 
         /**
-         * Content of the choice 
+         * Content of the choice. This field should be used to store the value of the choice.
          */
         content: { [type: string]: any; };
 

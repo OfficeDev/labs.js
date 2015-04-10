@@ -38,7 +38,7 @@ function createDefaultChoiceConfiguration() {
         maxScore: 1,
         hasAnswer: true,
         answer: "0",
-        values: {hints: [{ id: null, isHint: true, value: "The answer is true" }, { id: null, isHint: true, value: "The answer is really true" }]},
+        values: {hints: [{ id: null, isHint: true, value: {"text/html": "<p>This is true</p>", "text": "This is true"} }, { id: null, isHint: true, value: {"text/html": "<p>This is really true</p>", "text": "This is really true"} }]},
         secure: false
     };
 
@@ -536,7 +536,7 @@ asyncTest("Test Input Attempt Actions", () => {
         answer: null,
         type: Labs.Components.InputComponentType,
         name: "Test Component",
-        values: { hints: [{ id: null, isHint: true, value: "The answer is true" }, { id: null, isHint: true, value: "The answer is really true" }] },
+        values: { hints: [{ id: null, isHint: true, value: {"text/html": "<p>This is true</p>", "text": "This is true"} }, { id: null, isHint: true, value: {"text/html": "<p>This is really true</p>", "text": "This is really true"} }] },
         secure: false
     };
     var configuration: Labs.Core.IConfiguration = {
@@ -766,7 +766,7 @@ asyncTest("Test Dynamic Component Actions", () => {
         answer: null,
         type: Labs.Components.InputComponentType,
         name: "Test Component",
-        values: { hints: [{ id: null, isHint: true, value: "The answer is true" }, { id: null, isHint: true,  value: "The answer is really true" }] },
+        values: { hints: [{ id: null, isHint: true, value: {"text/html": "<p>This is true</p>", "text": "This is true"} }, { id: null, isHint: true,  value: {"text/html": "<p>This is really true</p>", "text": "This is really true"} }] },
         secure: false
     };
 
