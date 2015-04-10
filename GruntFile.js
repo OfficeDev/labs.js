@@ -37,7 +37,6 @@ module.exports = function(grunt) {
         'core/IComponentInstance.ts', 
         'core/IConfigurationInfo.ts', 
         'core/IConnectionResponse.ts',
-		'core/IContent.ts',	
         'core/IGetActionOptions.ts',
         'core/ILabCreationOptions.ts',
         'core/ILabHostVersionInfo.ts',

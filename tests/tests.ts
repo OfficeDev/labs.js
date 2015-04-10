@@ -25,47 +25,16 @@ QUnit.module("Labs Module", {
     }
 });
 
-var question_html: Labs.Core.IContent = {
-	type: "text/html",
-	value: "<p>The color of sky is red?</p>"
-};
-	
-var question_text: Labs.Core.IContent = {
-	type: "text",
-	value: "The color of sky is red?"
-};
-		
-var choice1_html: Labs.Core.IContent = {
-	type: "text/html",
-	value: "<p>True</p>"
-};
-		
-var choice1_text: Labs.Core.IContent = {
-	type: "text",
-	value: "True"
-};
-
-var choice2_html: Labs.Core.IContent = {
-	type: "text/html",
-	value: "<p>False</p>"
-};
-		
-var choice2_text: Labs.Core.IContent = {
-	type: "text",
-	value: "False"
-};
-
 function createDefaultChoiceConfiguration() {
     var appVersion = { major: 1, minor: 1 };
     var configurationName = "QUnit Test Lab";
-	
     var choiceComponent: Labs.Components.IChoiceComponent = {
         name: "Test Lab",
-		question: [question_html, question_text], 
+        question: {"text/html": "<p>Color of sky is blue?</p>", "text": "Color of sky is blue?"},
         type: Labs.Components.ChoiceComponentType,
         timeLimit: 0,
         maxAttempts: 0,
-        choices: [{ id: "0", content: [choice1_html, choice1_text], name: "True", value: "True" }, { id: "1", content: [choice2_html, choice2_text], name: "False", value: "False" }],
+        choices: [{ id: "0", content: {"text/html": "<p>True</p>", "text": "True"}, name: "True", value: "True" }, { id: "1", content: {"text/html": "<p>True</p>", "text": "True"}, name: "False", value: "False" }],
         maxScore: 1,
         hasAnswer: true,
         answer: "0",
@@ -560,7 +529,7 @@ asyncTest("Test Input Attempt Actions", () => {
     var appVersion = { major: 1, minor: 1 };
     var configurationName = "QUnit Test Lab";
     var inputComponent: Labs.Components.IInputComponent = {
-		question: [question_html, question_text],
+        question: {"text/html": "<p>What is the color of sky?</p>", "text": "What is the color of sky?"},
         maxScore: 0,
         timeLimit: 0,
         hasAnswer: false,
@@ -790,7 +759,7 @@ asyncTest("Test Dynamic Component Actions", () => {
     };
 
     var inputComponent: Labs.Components.IInputComponent = {
-		question: [question_html, question_text],
+        question: {"text/html": "<p>What is the color of sky?</p>", "text": "What is the color of sky?"},
         maxScore: 0,
         timeLimit: 0,
         hasAnswer: false,

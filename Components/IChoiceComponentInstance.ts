@@ -21,7 +21,7 @@ module Labs.Components {
         /**
          * The question associated with the problem
          */
-        question: Core.IContent[];
+        question: { [type: string]: any; };
         
         /**
          * The list of choices associated with the problem

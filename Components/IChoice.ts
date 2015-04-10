@@ -26,7 +26,7 @@ module Labs.Components {
         /**
          * Content of the choice 
          */
-        content: Core.IContent[];
+        content: { [type: string]: any; };
 
         /**
          * ****Deprecated****  
