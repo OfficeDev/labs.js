@@ -25,6 +25,11 @@ module Labs.Components {
      */
     export interface IChoiceComponent extends Labs.Core.IComponent {
         /**
+         * The question associated with the problem
+         */
+        question: Core.IContent[];
+
+        /**
          * The list of choices associated with the problem
          */
         choices: IChoice[];        

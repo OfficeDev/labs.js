@@ -13,32 +13,19 @@
 // limitations under the License.
 //
 
-module Labs.Components {
+module Labs.Core {
     /**
-     * A choice for a problem
+     * Base class for contents stored with a lab
      */
-    export interface IChoice {
+    export interface IContent {
         /**
-         * Unique id to represent the choice
+         * Type of the content.
          */
-        id: string;
+        type: string;
 
         /**
-         * Content of the choice 
+         * Value of the content.
          */
-        content: Core.IContent[];
-
-        /**
-         * ****Deprecated****  
-         * Display string to use to represent the value
-         * I think I should put this into the value type - have default ones show up - and then have custom values within
-         */
-        name: string;
-
-        /**
-         * ****Deprecated****
-         * The value of the choice
-         */
-        value: any;
+        value: any;    
     }
 }

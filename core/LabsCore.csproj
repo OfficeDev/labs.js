@@ -56,6 +56,7 @@
     <TypeScriptCompile Include="IComponentInstance.ts" />
     <TypeScriptCompile Include="IConfigurationInfo.ts" />
     <TypeScriptCompile Include="IConnectionResponse.ts" />
+    <TypeScriptCompile Include="IContent.ts" />
     <TypeScriptCompile Include="IGetActionOptions.ts" />
     <TypeScriptCompile Include="ILabCreationOptions.ts" />
     <TypeScriptCompile Include="ILabHostVersionInfo.ts" />
