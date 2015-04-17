@@ -28,17 +28,17 @@ QUnit.module("Labs Module", {
 function createDefaultChoiceConfiguration() {
     var appVersion = { major: 1, minor: 1 };
     var configurationName = "QUnit Test Lab";
-
     var choiceComponent: Labs.Components.IChoiceComponent = {
         name: "Test Lab",
+        question: {"text/html": "<p>Color of sky is blue?</p>", "text": "Color of sky is blue?"},
         type: Labs.Components.ChoiceComponentType,
         timeLimit: 0,
         maxAttempts: 0,
-        choices: [{ id: "0", name: "True", value: "True" }, { id: "1", name: "False", value: "False" }],
+        choices: [{ id: "0", content: {"text/html": "<p>True</p>", "text": "True"}, name: "True", value: "True" }, { id: "1", content: {"text/html": "<p>True</p>", "text": "True"}, name: "False", value: "False" }],
         maxScore: 1,
         hasAnswer: true,
         answer: "0",
-        values: {hints: [{ id: null, isHint: true, value: "The answer is true" }, { id: null, isHint: true, value: "The answer is really true" }]},
+        values: {hints: [{ id: null, isHint: true, value: {"text/html": "<p>This is true</p>", "text": "This is true"} }, { id: null, isHint: true, value: {"text/html": "<p>This is really true</p>", "text": "This is really true"} }]},
         secure: false
     };
 
@@ -529,13 +529,14 @@ asyncTest("Test Input Attempt Actions", () => {
     var appVersion = { major: 1, minor: 1 };
     var configurationName = "QUnit Test Lab";
     var inputComponent: Labs.Components.IInputComponent = {
+        question: {"text/html": "<p>What is the color of sky?</p>", "text": "What is the color of sky?"},
         maxScore: 0,
         timeLimit: 0,
         hasAnswer: false,
         answer: null,
         type: Labs.Components.InputComponentType,
         name: "Test Component",
-        values: { hints: [{ id: null, isHint: true, value: "The answer is true" }, { id: null, isHint: true, value: "The answer is really true" }] },
+        values: { hints: [{ id: null, isHint: true, value: {"text/html": "<p>This is true</p>", "text": "This is true"} }, { id: null, isHint: true, value: {"text/html": "<p>This is really true</p>", "text": "This is really true"} }] },
         secure: false
     };
     var configuration: Labs.Core.IConfiguration = {
@@ -758,13 +759,14 @@ asyncTest("Test Dynamic Component Actions", () => {
     };
 
     var inputComponent: Labs.Components.IInputComponent = {
+        question: {"text/html": "<p>What is the color of sky?</p>", "text": "What is the color of sky?"},
         maxScore: 0,
         timeLimit: 0,
         hasAnswer: false,
         answer: null,
         type: Labs.Components.InputComponentType,
         name: "Test Component",
-        values: { hints: [{ id: null, isHint: true, value: "The answer is true" }, { id: null, isHint: true,  value: "The answer is really true" }] },
+        values: { hints: [{ id: null, isHint: true, value: {"text/html": "<p>This is true</p>", "text": "This is true"} }, { id: null, isHint: true,  value: {"text/html": "<p>This is really true</p>", "text": "This is really true"} }] },
         secure: false
     };
 

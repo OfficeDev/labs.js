@@ -24,12 +24,19 @@ module Labs.Components {
         id: string;
 
         /**
+         * Content of the choice. This field should be used to store the value of the choice.
+         */
+        content: { [type: string]: any; };
+
+        /**
+         * ****Deprecated****  
          * Display string to use to represent the value
          * I think I should put this into the value type - have default ones show up - and then have custom values within
          */
         name: string;
 
         /**
+         * ****Deprecated****
          * The value of the choice
          */
         value: any;
