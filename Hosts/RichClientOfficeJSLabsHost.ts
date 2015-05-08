@@ -24,6 +24,7 @@ module Labs {
         private _configurationInfo: Labs.Core.IConfigurationInfo = null;
 
         constructor(configuration: Labs.Core.IConfiguration, createdHostVersion: Labs.Core.IVersion) {
+			this._createdHostVersion = createdHostVersion;
             // Construct the configuration info and lab state if the lab was previously created            
             if (this._createdHostVersion) {
                 this._configurationInfo = { hostVersion: this._createdHostVersion };
