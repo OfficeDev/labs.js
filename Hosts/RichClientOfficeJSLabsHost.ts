@@ -25,13 +25,15 @@ module Labs {
 
         constructor(configuration: Labs.Core.IConfiguration, createdHostVersion: Labs.Core.IVersion) {
             // Construct the configuration info and lab state if the lab was previously created            
-            if (this._createdHostVersion) {
+            if (createdHostVersion) {
+                this._createdHostVersion = createdHostVersion;
                 this._configurationInfo = { hostVersion: this._createdHostVersion };
                 this._labState = new Labs.InMemoryLabState();
                 this._labState.setConfiguration(configuration);
                 this._createdHostVersion = createdHostVersion;  
             } else {
                 this._configurationInfo = null;
+                this._createdHostVersion = null;				
             }            
                         
             // Get the current active view and pass it to the initialization method
