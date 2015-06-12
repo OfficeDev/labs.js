@@ -36,6 +36,6 @@ module Labs.Core {
         /**
          * The value. May or may not be set depending on if it has been hidden.
          */
-        value?: any;
+        value?: { [type: string]: any; };
     }
 }

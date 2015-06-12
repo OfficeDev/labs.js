@@ -26,6 +26,6 @@ module Labs.Core {
         /**
          * The value
          */
-        value: any;
+        value: { [type: string]: any; };
     }
 }

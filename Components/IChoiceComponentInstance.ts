@@ -17,7 +17,12 @@ module Labs.Components {
     /**
      * An instance of a choice component
      */ 
-    export interface IChoiceComponentInstance extends Labs.Core.IComponentInstance {        
+    export interface IChoiceComponentInstance extends Labs.Core.IComponentInstance {
+        /**
+         * The question associated with the problem
+         */
+        question: { [type: string]: any; };
+        
         /**
          * The list of choices associated with the problem
          */

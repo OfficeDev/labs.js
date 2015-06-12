@@ -23,6 +23,11 @@ module Labs.Components {
      * An input problem is one in which the user enters an input which is checked against a correct value.
      */
     export interface IInputComponent extends Labs.Core.IComponent {
+        /**
+         * The question associated with the problem
+         */
+        question: { [type: string]: any; };
+        
         /** 
          * The max score for the input component
          */
